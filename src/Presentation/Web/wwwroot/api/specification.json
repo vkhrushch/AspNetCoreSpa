@@ -511,6 +511,412 @@
         ]
       }
     },
+    "/api/GameDevelopers/GetAll": {
+      "get": {
+        "tags": [
+          "GameDevelopers"
+        ],
+        "operationId": "GameDevelopers_GetAll",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameDevelopersListVm"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/GameDevelopers/Get/{id}": {
+      "get": {
+        "tags": [
+          "GameDevelopers"
+        ],
+        "operationId": "GameDevelopers_Get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameDeveloperDetailVm"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/GameDevelopers/Create": {
+      "post": {
+        "tags": [
+          "GameDevelopers"
+        ],
+        "operationId": "GameDevelopers_Create",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGameDeveloperCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/GameDevelopers/Update/{id}": {
+      "put": {
+        "tags": [
+          "GameDevelopers"
+        ],
+        "operationId": "GameDevelopers_Update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGameDeveloperCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/GameDevelopers/Delete/{id}": {
+      "delete": {
+        "tags": [
+          "GameDevelopers"
+        ],
+        "operationId": "GameDevelopers_Delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Games/GetAll": {
+      "get": {
+        "tags": [
+          "Games"
+        ],
+        "operationId": "Games_GetAll",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GamesListVm"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Games/Get/{id}": {
+      "get": {
+        "tags": [
+          "Games"
+        ],
+        "operationId": "Games_Get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameDetailVm"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Games/Create": {
+      "post": {
+        "tags": [
+          "Games"
+        ],
+        "operationId": "Games_Create",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGameCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Games/Update/{id}": {
+      "put": {
+        "tags": [
+          "Games"
+        ],
+        "operationId": "Games_Update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGameCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Games/Delete/{id}": {
+      "delete": {
+        "tags": [
+          "Games"
+        ],
+        "operationId": "Games_Delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
     "/api/Products/GetAll": {
       "get": {
         "tags": [
@@ -1318,6 +1724,503 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          }
+        }
+      },
+      "GameDevelopersListVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "gameDevelopers": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/GameDeveloperDto"
+            }
+          }
+        }
+      },
+      "GameDeveloperDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "developerLevel": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GameDeveloperDetailVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "developerLevel": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CreateGameDeveloperCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "developerLevel": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GameDeveloperLevel"
+              }
+            ]
+          }
+        }
+      },
+      "GameDeveloperLevel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "gameDeveloperLevelId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "developersOfLevel": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/GameDeveloper"
+            }
+          }
+        }
+      },
+      "GameDeveloper": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "gameDeveloperId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "developerLevel": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GameDeveloperLevel"
+              }
+            ]
+          },
+          "developerLevelId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "gameFeaturesAssigned": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/GameFeature"
+            }
+          }
+        }
+      },
+      "GameFeature": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "gameFeatureId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "game": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Game"
+              }
+            ]
+          },
+          "developer": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GameDeveloper"
+              }
+            ]
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "developmentState": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GameFeatureDevelopmentState"
+              }
+            ]
+          },
+          "gameId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "developerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "developmentStateId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Game": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "gameId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "difficultyLevel": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GameDifficultyLevel"
+              }
+            ]
+          },
+          "gameDifficultyLevelId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "genres": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/GameGenreGame"
+            }
+          },
+          "featuresInDevelopment": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/GameFeature"
+            }
+          }
+        }
+      },
+      "GameDifficultyLevel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "gameDifficultyLevelId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "gamesOfDifficultyLevel": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Game"
+            }
+          }
+        }
+      },
+      "GameGenreGame": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "gameGenreId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "gameGenre": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GameGenre"
+              }
+            ]
+          },
+          "gameId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "game": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Game"
+              }
+            ]
+          }
+        }
+      },
+      "GameGenre": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "gameGenreId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "name": {
+                "type": "string",
+                "nullable": true
+              },
+              "gamesOfGenre": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/GameGenreGame"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "AuditableEntity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastModifiedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "GameFeatureDevelopmentState": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "gameFeatureDevelopmentStateId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "featuresInState": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/GameFeature"
+            }
+          }
+        }
+      },
+      "UpdateGameDeveloperCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "developerLevel": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GameDeveloperLevel"
+              }
+            ]
+          }
+        }
+      },
+      "GamesListVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "games": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/GameDto"
+            }
+          }
+        }
+      },
+      "GameDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "difficulty": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GameDetailVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "difficulty": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CreateGameCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "difficulty": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GameDifficultyLevel"
+              }
+            ]
+          }
+        }
+      },
+      "UpdateGameCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "difficulty": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GameDifficultyLevel"
+              }
+            ]
           }
         }
       },

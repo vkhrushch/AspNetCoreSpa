@@ -56,7 +56,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="ClientApp\src\app\+examples\examples\gamestore\game-developers\game-developers.component.ts" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <TypeScriptCompile Include="ClientApp\src\app\+examples\examples\gamestore\game-developers\game-developers.component.ts" />
 	</ItemGroup>
 
 	<ItemGroup>

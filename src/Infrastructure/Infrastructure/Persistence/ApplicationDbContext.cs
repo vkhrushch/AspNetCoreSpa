@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AspNetCoreSpa.Application.Abstractions;
 using AspNetCoreSpa.Common;
 using AspNetCoreSpa.Domain.Entities;
+using AspNetCoreSpa.Domain.Entities.ManyToMany;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreSpa.Infrastructure.Persistence
@@ -45,7 +46,28 @@ namespace AspNetCoreSpa.Infrastructure.Persistence
         public DbSet<Supplier> Suppliers { get; set; }
 
         public DbSet<Territory> Territories { get; set; }
+
+        public DbSet<Game> Games { get; set; }
+
+        public DbSet<GameDeveloper> GameDevelopers { get; set; }
+
+        public DbSet<GameDeveloperLevel> GameDeveloperLevels { get; set; }
+
+        public DbSet<GameDifficultyLevel> GameDifficultyLevels { get; set; }
+
+        public DbSet<GameFeature> GameFeatures { get; set; }
+
+        public DbSet<GameFeatureDevelopmentState> GameFeatureDevelopmentStates { get; set; }
+
+        public DbSet<GameGenre> GameGenres { get; set; }
+
+        /// <summary>
+        /// Many-to-many
+        /// </summary>
+        public DbSet<GameGenreGame> GameGenreGames { get; set; }
+
         public DbSet<ContactUs> ContactUs { get; set; }
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (var entry in ChangeTracker.Entries<AuditableEntity>())

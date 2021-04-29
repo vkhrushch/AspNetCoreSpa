@@ -819,6 +819,586 @@ export class EmployeesClient implements IEmployeesClient {
     }
 }
 
+export interface IGameDevelopersClient {
+    getAll(): Observable<GameDevelopersListVm>;
+    get(id: number): Observable<GameDeveloperDetailVm>;
+    create(command: CreateGameDeveloperCommand): Observable<void>;
+    update(id: string, command: UpdateGameDeveloperCommand): Observable<void>;
+    delete(id: number): Observable<void>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class GameDevelopersClient implements IGameDevelopersClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getAll(): Observable<GameDevelopersListVm> {
+        let url_ = this.baseUrl + "/api/GameDevelopers/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<GameDevelopersListVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GameDevelopersListVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<GameDevelopersListVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GameDevelopersListVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GameDevelopersListVm>(<any>null);
+    }
+
+    get(id: number): Observable<GameDeveloperDetailVm> {
+        let url_ = this.baseUrl + "/api/GameDevelopers/Get/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<GameDeveloperDetailVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GameDeveloperDetailVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<GameDeveloperDetailVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GameDeveloperDetailVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GameDeveloperDetailVm>(<any>null);
+    }
+
+    create(command: CreateGameDeveloperCommand): Observable<void> {
+        let url_ = this.baseUrl + "/api/GameDevelopers/Create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let resultdefault: any = null;
+            let resultDatadefault = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            resultdefault = ProblemDetails.fromJS(resultDatadefault);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            }));
+        }
+    }
+
+    update(id: string, command: UpdateGameDeveloperCommand): Observable<void> {
+        let url_ = this.baseUrl + "/api/GameDevelopers/Update/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    delete(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/GameDevelopers/Delete/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+export interface IGamesClient {
+    getAll(): Observable<GamesListVm>;
+    get(id: number): Observable<GameDetailVm>;
+    create(command: CreateGameCommand): Observable<void>;
+    update(id: string, command: UpdateGameCommand): Observable<void>;
+    delete(id: number): Observable<void>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class GamesClient implements IGamesClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getAll(): Observable<GamesListVm> {
+        let url_ = this.baseUrl + "/api/Games/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<GamesListVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GamesListVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<GamesListVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GamesListVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GamesListVm>(<any>null);
+    }
+
+    get(id: number): Observable<GameDetailVm> {
+        let url_ = this.baseUrl + "/api/Games/Get/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<GameDetailVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GameDetailVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<GameDetailVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GameDetailVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GameDetailVm>(<any>null);
+    }
+
+    create(command: CreateGameCommand): Observable<void> {
+        let url_ = this.baseUrl + "/api/Games/Create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let resultdefault: any = null;
+            let resultDatadefault = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            resultdefault = ProblemDetails.fromJS(resultDatadefault);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            }));
+        }
+    }
+
+    update(id: string, command: UpdateGameCommand): Observable<void> {
+        let url_ = this.baseUrl + "/api/Games/Update/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    delete(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Games/Delete/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
 export interface IProductsClient {
     getAll(): Observable<ProductsListVm>;
     get(id: number): Observable<ProductDetailVm>;
@@ -2154,6 +2734,987 @@ export interface IUpsertEmployeeCommand {
     notes?: string | undefined;
     photo?: string | undefined;
     managerId?: number | undefined;
+}
+
+export class GameDevelopersListVm implements IGameDevelopersListVm {
+    gameDevelopers?: GameDeveloperDto[] | undefined;
+
+    constructor(data?: IGameDevelopersListVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["gameDevelopers"])) {
+                this.gameDevelopers = [] as any;
+                for (let item of _data["gameDevelopers"])
+                    this.gameDevelopers!.push(GameDeveloperDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GameDevelopersListVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new GameDevelopersListVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.gameDevelopers)) {
+            data["gameDevelopers"] = [];
+            for (let item of this.gameDevelopers)
+                data["gameDevelopers"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IGameDevelopersListVm {
+    gameDevelopers?: GameDeveloperDto[] | undefined;
+}
+
+export class GameDeveloperDto implements IGameDeveloperDto {
+    id?: number;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    age?: number;
+    developerLevel?: string | undefined;
+
+    constructor(data?: IGameDeveloperDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.age = _data["age"];
+            this.developerLevel = _data["developerLevel"];
+        }
+    }
+
+    static fromJS(data: any): GameDeveloperDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GameDeveloperDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["age"] = this.age;
+        data["developerLevel"] = this.developerLevel;
+        return data; 
+    }
+}
+
+export interface IGameDeveloperDto {
+    id?: number;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    age?: number;
+    developerLevel?: string | undefined;
+}
+
+export class GameDeveloperDetailVm implements IGameDeveloperDetailVm {
+    id?: number;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    age?: number;
+    developerLevel?: string | undefined;
+
+    constructor(data?: IGameDeveloperDetailVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.age = _data["age"];
+            this.developerLevel = _data["developerLevel"];
+        }
+    }
+
+    static fromJS(data: any): GameDeveloperDetailVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new GameDeveloperDetailVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["age"] = this.age;
+        data["developerLevel"] = this.developerLevel;
+        return data; 
+    }
+}
+
+export interface IGameDeveloperDetailVm {
+    id?: number;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    age?: number;
+    developerLevel?: string | undefined;
+}
+
+export class CreateGameDeveloperCommand implements ICreateGameDeveloperCommand {
+    id?: number;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    age?: number;
+    developerLevel?: GameDeveloperLevel | undefined;
+
+    constructor(data?: ICreateGameDeveloperCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.age = _data["age"];
+            this.developerLevel = _data["developerLevel"] ? GameDeveloperLevel.fromJS(_data["developerLevel"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): CreateGameDeveloperCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateGameDeveloperCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["age"] = this.age;
+        data["developerLevel"] = this.developerLevel ? this.developerLevel.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface ICreateGameDeveloperCommand {
+    id?: number;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    age?: number;
+    developerLevel?: GameDeveloperLevel | undefined;
+}
+
+export class GameDeveloperLevel implements IGameDeveloperLevel {
+    gameDeveloperLevelId?: number;
+    name?: string | undefined;
+    developersOfLevel?: GameDeveloper[] | undefined;
+
+    constructor(data?: IGameDeveloperLevel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.gameDeveloperLevelId = _data["gameDeveloperLevelId"];
+            this.name = _data["name"];
+            if (Array.isArray(_data["developersOfLevel"])) {
+                this.developersOfLevel = [] as any;
+                for (let item of _data["developersOfLevel"])
+                    this.developersOfLevel!.push(GameDeveloper.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GameDeveloperLevel {
+        data = typeof data === 'object' ? data : {};
+        let result = new GameDeveloperLevel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["gameDeveloperLevelId"] = this.gameDeveloperLevelId;
+        data["name"] = this.name;
+        if (Array.isArray(this.developersOfLevel)) {
+            data["developersOfLevel"] = [];
+            for (let item of this.developersOfLevel)
+                data["developersOfLevel"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IGameDeveloperLevel {
+    gameDeveloperLevelId?: number;
+    name?: string | undefined;
+    developersOfLevel?: GameDeveloper[] | undefined;
+}
+
+export class GameDeveloper implements IGameDeveloper {
+    gameDeveloperId?: number;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    age?: number;
+    developerLevel?: GameDeveloperLevel | undefined;
+    developerLevelId?: number;
+    gameFeaturesAssigned?: GameFeature[] | undefined;
+
+    constructor(data?: IGameDeveloper) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.gameDeveloperId = _data["gameDeveloperId"];
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.age = _data["age"];
+            this.developerLevel = _data["developerLevel"] ? GameDeveloperLevel.fromJS(_data["developerLevel"]) : <any>undefined;
+            this.developerLevelId = _data["developerLevelId"];
+            if (Array.isArray(_data["gameFeaturesAssigned"])) {
+                this.gameFeaturesAssigned = [] as any;
+                for (let item of _data["gameFeaturesAssigned"])
+                    this.gameFeaturesAssigned!.push(GameFeature.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GameDeveloper {
+        data = typeof data === 'object' ? data : {};
+        let result = new GameDeveloper();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["gameDeveloperId"] = this.gameDeveloperId;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["age"] = this.age;
+        data["developerLevel"] = this.developerLevel ? this.developerLevel.toJSON() : <any>undefined;
+        data["developerLevelId"] = this.developerLevelId;
+        if (Array.isArray(this.gameFeaturesAssigned)) {
+            data["gameFeaturesAssigned"] = [];
+            for (let item of this.gameFeaturesAssigned)
+                data["gameFeaturesAssigned"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IGameDeveloper {
+    gameDeveloperId?: number;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    age?: number;
+    developerLevel?: GameDeveloperLevel | undefined;
+    developerLevelId?: number;
+    gameFeaturesAssigned?: GameFeature[] | undefined;
+}
+
+export class GameFeature implements IGameFeature {
+    gameFeatureId?: number;
+    game?: Game | undefined;
+    developer?: GameDeveloper | undefined;
+    name?: string | undefined;
+    description?: string | undefined;
+    developmentState?: GameFeatureDevelopmentState | undefined;
+    gameId?: number;
+    developerId?: number;
+    developmentStateId?: number;
+
+    constructor(data?: IGameFeature) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.gameFeatureId = _data["gameFeatureId"];
+            this.game = _data["game"] ? Game.fromJS(_data["game"]) : <any>undefined;
+            this.developer = _data["developer"] ? GameDeveloper.fromJS(_data["developer"]) : <any>undefined;
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.developmentState = _data["developmentState"] ? GameFeatureDevelopmentState.fromJS(_data["developmentState"]) : <any>undefined;
+            this.gameId = _data["gameId"];
+            this.developerId = _data["developerId"];
+            this.developmentStateId = _data["developmentStateId"];
+        }
+    }
+
+    static fromJS(data: any): GameFeature {
+        data = typeof data === 'object' ? data : {};
+        let result = new GameFeature();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["gameFeatureId"] = this.gameFeatureId;
+        data["game"] = this.game ? this.game.toJSON() : <any>undefined;
+        data["developer"] = this.developer ? this.developer.toJSON() : <any>undefined;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["developmentState"] = this.developmentState ? this.developmentState.toJSON() : <any>undefined;
+        data["gameId"] = this.gameId;
+        data["developerId"] = this.developerId;
+        data["developmentStateId"] = this.developmentStateId;
+        return data; 
+    }
+}
+
+export interface IGameFeature {
+    gameFeatureId?: number;
+    game?: Game | undefined;
+    developer?: GameDeveloper | undefined;
+    name?: string | undefined;
+    description?: string | undefined;
+    developmentState?: GameFeatureDevelopmentState | undefined;
+    gameId?: number;
+    developerId?: number;
+    developmentStateId?: number;
+}
+
+export class Game implements IGame {
+    gameId?: number;
+    name?: string | undefined;
+    difficultyLevel?: GameDifficultyLevel | undefined;
+    gameDifficultyLevelId?: number;
+    genres?: GameGenreGame[] | undefined;
+    featuresInDevelopment?: GameFeature[] | undefined;
+
+    constructor(data?: IGame) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.gameId = _data["gameId"];
+            this.name = _data["name"];
+            this.difficultyLevel = _data["difficultyLevel"] ? GameDifficultyLevel.fromJS(_data["difficultyLevel"]) : <any>undefined;
+            this.gameDifficultyLevelId = _data["gameDifficultyLevelId"];
+            if (Array.isArray(_data["genres"])) {
+                this.genres = [] as any;
+                for (let item of _data["genres"])
+                    this.genres!.push(GameGenreGame.fromJS(item));
+            }
+            if (Array.isArray(_data["featuresInDevelopment"])) {
+                this.featuresInDevelopment = [] as any;
+                for (let item of _data["featuresInDevelopment"])
+                    this.featuresInDevelopment!.push(GameFeature.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Game {
+        data = typeof data === 'object' ? data : {};
+        let result = new Game();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["gameId"] = this.gameId;
+        data["name"] = this.name;
+        data["difficultyLevel"] = this.difficultyLevel ? this.difficultyLevel.toJSON() : <any>undefined;
+        data["gameDifficultyLevelId"] = this.gameDifficultyLevelId;
+        if (Array.isArray(this.genres)) {
+            data["genres"] = [];
+            for (let item of this.genres)
+                data["genres"].push(item.toJSON());
+        }
+        if (Array.isArray(this.featuresInDevelopment)) {
+            data["featuresInDevelopment"] = [];
+            for (let item of this.featuresInDevelopment)
+                data["featuresInDevelopment"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IGame {
+    gameId?: number;
+    name?: string | undefined;
+    difficultyLevel?: GameDifficultyLevel | undefined;
+    gameDifficultyLevelId?: number;
+    genres?: GameGenreGame[] | undefined;
+    featuresInDevelopment?: GameFeature[] | undefined;
+}
+
+export class GameDifficultyLevel implements IGameDifficultyLevel {
+    gameDifficultyLevelId?: number;
+    name?: string | undefined;
+    gamesOfDifficultyLevel?: Game[] | undefined;
+
+    constructor(data?: IGameDifficultyLevel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.gameDifficultyLevelId = _data["gameDifficultyLevelId"];
+            this.name = _data["name"];
+            if (Array.isArray(_data["gamesOfDifficultyLevel"])) {
+                this.gamesOfDifficultyLevel = [] as any;
+                for (let item of _data["gamesOfDifficultyLevel"])
+                    this.gamesOfDifficultyLevel!.push(Game.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GameDifficultyLevel {
+        data = typeof data === 'object' ? data : {};
+        let result = new GameDifficultyLevel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["gameDifficultyLevelId"] = this.gameDifficultyLevelId;
+        data["name"] = this.name;
+        if (Array.isArray(this.gamesOfDifficultyLevel)) {
+            data["gamesOfDifficultyLevel"] = [];
+            for (let item of this.gamesOfDifficultyLevel)
+                data["gamesOfDifficultyLevel"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IGameDifficultyLevel {
+    gameDifficultyLevelId?: number;
+    name?: string | undefined;
+    gamesOfDifficultyLevel?: Game[] | undefined;
+}
+
+export class GameGenreGame implements IGameGenreGame {
+    gameGenreId?: number;
+    gameGenre?: GameGenre | undefined;
+    gameId?: number;
+    game?: Game | undefined;
+
+    constructor(data?: IGameGenreGame) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.gameGenreId = _data["gameGenreId"];
+            this.gameGenre = _data["gameGenre"] ? GameGenre.fromJS(_data["gameGenre"]) : <any>undefined;
+            this.gameId = _data["gameId"];
+            this.game = _data["game"] ? Game.fromJS(_data["game"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GameGenreGame {
+        data = typeof data === 'object' ? data : {};
+        let result = new GameGenreGame();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["gameGenreId"] = this.gameGenreId;
+        data["gameGenre"] = this.gameGenre ? this.gameGenre.toJSON() : <any>undefined;
+        data["gameId"] = this.gameId;
+        data["game"] = this.game ? this.game.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGameGenreGame {
+    gameGenreId?: number;
+    gameGenre?: GameGenre | undefined;
+    gameId?: number;
+    game?: Game | undefined;
+}
+
+export class AuditableEntity implements IAuditableEntity {
+    createdBy?: string | undefined;
+    created?: Date;
+    lastModifiedBy?: string | undefined;
+    lastModified?: Date | undefined;
+
+    constructor(data?: IAuditableEntity) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createdBy = _data["createdBy"];
+            this.created = _data["created"] ? new Date(_data["created"].toString()) : <any>undefined;
+            this.lastModifiedBy = _data["lastModifiedBy"];
+            this.lastModified = _data["lastModified"] ? new Date(_data["lastModified"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): AuditableEntity {
+        data = typeof data === 'object' ? data : {};
+        let result = new AuditableEntity();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdBy"] = this.createdBy;
+        data["created"] = this.created ? this.created.toISOString() : <any>undefined;
+        data["lastModifiedBy"] = this.lastModifiedBy;
+        data["lastModified"] = this.lastModified ? this.lastModified.toISOString() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IAuditableEntity {
+    createdBy?: string | undefined;
+    created?: Date;
+    lastModifiedBy?: string | undefined;
+    lastModified?: Date | undefined;
+}
+
+export class GameGenre extends AuditableEntity implements IGameGenre {
+    gameGenreId?: number;
+    name?: string | undefined;
+    gamesOfGenre?: GameGenreGame[] | undefined;
+
+    constructor(data?: IGameGenre) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.gameGenreId = _data["gameGenreId"];
+            this.name = _data["name"];
+            if (Array.isArray(_data["gamesOfGenre"])) {
+                this.gamesOfGenre = [] as any;
+                for (let item of _data["gamesOfGenre"])
+                    this.gamesOfGenre!.push(GameGenreGame.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GameGenre {
+        data = typeof data === 'object' ? data : {};
+        let result = new GameGenre();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["gameGenreId"] = this.gameGenreId;
+        data["name"] = this.name;
+        if (Array.isArray(this.gamesOfGenre)) {
+            data["gamesOfGenre"] = [];
+            for (let item of this.gamesOfGenre)
+                data["gamesOfGenre"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IGameGenre extends IAuditableEntity {
+    gameGenreId?: number;
+    name?: string | undefined;
+    gamesOfGenre?: GameGenreGame[] | undefined;
+}
+
+export class GameFeatureDevelopmentState implements IGameFeatureDevelopmentState {
+    gameFeatureDevelopmentStateId?: number;
+    name?: string | undefined;
+    featuresInState?: GameFeature[] | undefined;
+
+    constructor(data?: IGameFeatureDevelopmentState) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.gameFeatureDevelopmentStateId = _data["gameFeatureDevelopmentStateId"];
+            this.name = _data["name"];
+            if (Array.isArray(_data["featuresInState"])) {
+                this.featuresInState = [] as any;
+                for (let item of _data["featuresInState"])
+                    this.featuresInState!.push(GameFeature.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GameFeatureDevelopmentState {
+        data = typeof data === 'object' ? data : {};
+        let result = new GameFeatureDevelopmentState();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["gameFeatureDevelopmentStateId"] = this.gameFeatureDevelopmentStateId;
+        data["name"] = this.name;
+        if (Array.isArray(this.featuresInState)) {
+            data["featuresInState"] = [];
+            for (let item of this.featuresInState)
+                data["featuresInState"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IGameFeatureDevelopmentState {
+    gameFeatureDevelopmentStateId?: number;
+    name?: string | undefined;
+    featuresInState?: GameFeature[] | undefined;
+}
+
+export class UpdateGameDeveloperCommand implements IUpdateGameDeveloperCommand {
+    id?: number;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    age?: number;
+    developerLevel?: GameDeveloperLevel | undefined;
+
+    constructor(data?: IUpdateGameDeveloperCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.age = _data["age"];
+            this.developerLevel = _data["developerLevel"] ? GameDeveloperLevel.fromJS(_data["developerLevel"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): UpdateGameDeveloperCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateGameDeveloperCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["age"] = this.age;
+        data["developerLevel"] = this.developerLevel ? this.developerLevel.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IUpdateGameDeveloperCommand {
+    id?: number;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    age?: number;
+    developerLevel?: GameDeveloperLevel | undefined;
+}
+
+export class GamesListVm implements IGamesListVm {
+    games?: GameDto[] | undefined;
+
+    constructor(data?: IGamesListVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["games"])) {
+                this.games = [] as any;
+                for (let item of _data["games"])
+                    this.games!.push(GameDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GamesListVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new GamesListVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.games)) {
+            data["games"] = [];
+            for (let item of this.games)
+                data["games"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IGamesListVm {
+    games?: GameDto[] | undefined;
+}
+
+export class GameDto implements IGameDto {
+    id?: number;
+    name?: string | undefined;
+    difficulty?: string | undefined;
+
+    constructor(data?: IGameDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.difficulty = _data["difficulty"];
+        }
+    }
+
+    static fromJS(data: any): GameDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GameDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["difficulty"] = this.difficulty;
+        return data; 
+    }
+}
+
+export interface IGameDto {
+    id?: number;
+    name?: string | undefined;
+    difficulty?: string | undefined;
+}
+
+export class GameDetailVm implements IGameDetailVm {
+    id?: number;
+    name?: string | undefined;
+    difficulty?: string | undefined;
+
+    constructor(data?: IGameDetailVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.difficulty = _data["difficulty"];
+        }
+    }
+
+    static fromJS(data: any): GameDetailVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new GameDetailVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["difficulty"] = this.difficulty;
+        return data; 
+    }
+}
+
+export interface IGameDetailVm {
+    id?: number;
+    name?: string | undefined;
+    difficulty?: string | undefined;
+}
+
+export class CreateGameCommand implements ICreateGameCommand {
+    id?: number;
+    name?: string | undefined;
+    difficulty?: GameDifficultyLevel | undefined;
+
+    constructor(data?: ICreateGameCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.difficulty = _data["difficulty"] ? GameDifficultyLevel.fromJS(_data["difficulty"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): CreateGameCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateGameCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["difficulty"] = this.difficulty ? this.difficulty.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface ICreateGameCommand {
+    id?: number;
+    name?: string | undefined;
+    difficulty?: GameDifficultyLevel | undefined;
+}
+
+export class UpdateGameCommand implements IUpdateGameCommand {
+    id?: number;
+    name?: string | undefined;
+    difficulty?: GameDifficultyLevel | undefined;
+
+    constructor(data?: IUpdateGameCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.difficulty = _data["difficulty"] ? GameDifficultyLevel.fromJS(_data["difficulty"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): UpdateGameCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateGameCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["difficulty"] = this.difficulty ? this.difficulty.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IUpdateGameCommand {
+    id?: number;
+    name?: string | undefined;
+    difficulty?: GameDifficultyLevel | undefined;
 }
 
 export class ProductsListVm implements IProductsListVm {

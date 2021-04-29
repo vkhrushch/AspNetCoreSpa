@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AspNetCoreSpa.Application.Abstractions;
+using AspNetCoreSpa.Domain.Entities.ManyToMany;
 
 namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
 {
@@ -19,6 +20,12 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
         private readonly Dictionary<int, Category> Categories = new Dictionary<int, Category>();
         private readonly Dictionary<int, Shipper> Shippers = new Dictionary<int, Shipper>();
         private readonly Dictionary<int, Product> Products = new Dictionary<int, Product>();
+        private readonly List<GameGenre> _gameGenres = new List<GameGenre>();
+        private readonly List<GameDifficultyLevel> _gameDifficultyLevels = new List<GameDifficultyLevel>();
+        private readonly List<Game> _games = new List<Game>();
+        private readonly List<GameDeveloperLevel> _gameDeveloperLevels = new List<GameDeveloperLevel>();
+        private readonly List<GameDeveloper> _gameDevelopers = new List<GameDeveloper>();
+        private readonly List<GameFeatureDevelopmentState> _gameFeatureDevelopmentStates = new List<GameFeatureDevelopmentState>();
 
         public WebDataSeeder(IApplicationDbContext context)
         {
@@ -28,7 +35,7 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
 
         public async Task SeedAllAsync(CancellationToken cancellationToken)
         {
-            if (_context.Customers.Any())
+            if(_context.Customers.Any())
             {
                 return;
             }
@@ -51,8 +58,141 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
 
             await SeedOrdersAsync(cancellationToken);
 
+            // Games section
+
+            await SeedGameGenresAsync(cancellationToken);
+
+            await SeedGameDifficultyLevelsAsync(cancellationToken);
+
+            await SeedGamesAsync(cancellationToken);
+
+            await SeedGameDeveloperLevelsAsync(cancellationToken);
+
+            await SeedGameDevelopersAsync(cancellationToken);
+
+            await SeedGameFeatureDevelopmentStatesAsync(cancellationToken);
+
+            await SeedGameFeaturesAsync(cancellationToken);
+
+            await SeedGameGenreGamesAsync(cancellationToken);
+
             // TODO revisit later
             //await SeedUsersAsync(cancellationToken);
+        }
+
+        private async Task SeedGameGenresAsync(CancellationToken cancellationToken)
+        {
+            _gameGenres.AddRange(new[]
+            {
+                new GameGenre() { Name = "RolePlayingGame" },
+                new GameGenre() { Name = "Sports" },
+                new GameGenre() { Name = "Strategy" }
+            });
+
+             _context.GameGenres.AddRange(_gameGenres);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        
+        private async Task SeedGameDifficultyLevelsAsync(CancellationToken cancellationToken)
+        {
+            _gameDifficultyLevels.AddRange(new[]
+            {
+                new GameDifficultyLevel() { Name = "Novice" },
+                new GameDifficultyLevel() { Name = "Normal" },
+                new GameDifficultyLevel() { Name = "Expert" }
+            });
+
+            _context.GameDifficultyLevels.AddRange(_gameDifficultyLevels);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        private async Task SeedGamesAsync(CancellationToken cancellationToken)
+        {
+            _games.AddRange(new[]
+            {
+                new Game() { Name = "GameName1", GameDifficultyLevelId = 1 },
+                new Game() { Name = "GameName2", GameDifficultyLevelId = 2 },
+                new Game() { Name = "GameName3", GameDifficultyLevelId = 3 }
+            });
+
+            _context.Games.AddRange(_games);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        private async Task SeedGameDeveloperLevelsAsync(CancellationToken cancellationToken)
+        {
+            _gameDeveloperLevels.AddRange(new[]
+            {
+                new GameDeveloperLevel() { Name = "Junior" },
+                new GameDeveloperLevel() { Name = "Middle" },
+                new GameDeveloperLevel() { Name = "Senior" },
+            });
+
+            _context.GameDeveloperLevels.AddRange(_gameDeveloperLevels);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        private async Task SeedGameDevelopersAsync(CancellationToken cancellationToken)
+        {
+            _gameDevelopers.AddRange(new[]
+            {
+                new GameDeveloper() { FirstName = "F1", LastName = "L1", Age = 20, DeveloperLevelId = 1, DeveloperLevel = _gameDeveloperLevels[0] },
+                new GameDeveloper() { FirstName = "F2", LastName = "L2", Age = 30, DeveloperLevelId = 2, DeveloperLevel = _gameDeveloperLevels[1] },
+                new GameDeveloper() { FirstName = "F3", LastName = "L3", Age = 40, DeveloperLevelId = 3, DeveloperLevel = _gameDeveloperLevels[2] },
+            });
+
+            _context.GameDevelopers.AddRange(_gameDevelopers);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        private async Task SeedGameFeatureDevelopmentStatesAsync(CancellationToken cancellationToken)
+        {
+            _gameFeatureDevelopmentStates.AddRange(new[]
+            {
+                new GameFeatureDevelopmentState() { Name = "ToDo" },
+                new GameFeatureDevelopmentState() { Name = "InProgress" },
+                new GameFeatureDevelopmentState() { Name = "Done" }
+            });
+
+            _context.GameFeatureDevelopmentStates.AddRange(_gameFeatureDevelopmentStates);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        private async Task SeedGameFeaturesAsync(CancellationToken cancellationToken)
+        {
+            var gameFeatures = new[]
+            {
+                new GameFeature() { Name = "ButFix#1", Description = "Fix bugs", GameId = 1, DeveloperId = 1, DevelopmentStateId = 1, Game = _games[0], Developer = _gameDevelopers[0], DevelopmentState = _gameFeatureDevelopmentStates[0] },
+                new GameFeature() { Name = "ButFix#2", Description = "Fix bugs", GameId = 2, DeveloperId = 2, DevelopmentStateId = 2, Game = _games[1], Developer = _gameDevelopers[1], DevelopmentState = _gameFeatureDevelopmentStates[1] },
+                new GameFeature() { Name = "ButFix#3", Description = "Fix bugs", GameId = 2, DeveloperId = 2, DevelopmentStateId = 3, Game = _games[1], Developer = _gameDevelopers[1], DevelopmentState = _gameFeatureDevelopmentStates[2] },
+            };
+
+            _context.GameFeatures.AddRange(gameFeatures);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        private async Task SeedGameGenreGamesAsync(CancellationToken cancellationToken)
+        {
+            var gameGenreGames = new[]
+            {
+                new GameGenreGame() { GameId = 1, GameGenreId = 1, Game = _games[0], GameGenre = _gameGenres[0] },
+                new GameGenreGame() { GameId = 1, GameGenreId = 2, Game = _games[0], GameGenre = _gameGenres[1] },
+                new GameGenreGame() { GameId = 2, GameGenreId = 3, Game = _games[1], GameGenre = _gameGenres[2] },
+                new GameGenreGame() { GameId = 3, GameGenreId = 1, Game = _games[2], GameGenre = _gameGenres[0] },
+                new GameGenreGame() { GameId = 3, GameGenreId = 2, Game = _games[2], GameGenre = _gameGenres[1] },
+                new GameGenreGame() { GameId = 3, GameGenreId = 3, Game = _games[2], GameGenre = _gameGenres[2] }
+            };
+
+             _context.GameGenreGames.AddRange(gameGenreGames);
+            
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
         //private async Task SeedUsersAsync(CancellationToken cancellationToken)
