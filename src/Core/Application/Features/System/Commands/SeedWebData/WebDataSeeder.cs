@@ -35,6 +35,12 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
 
             await SeedCustomersAsync(cancellationToken);
 
+            await SeedClientsAsync(cancellationToken);
+
+            await SeedCarExpertsAsync(cancellationToken);
+
+            await SeedAutomobilesAsync(cancellationToken);
+
             await SeedRegionsAsync(cancellationToken);
 
             await SeedTerritoriesAsync(cancellationToken);
@@ -179,6 +185,41 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
             };
 
             _context.Customers.AddRange(customers);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        private async Task SeedClientsAsync(CancellationToken cancellationToken)
+        {
+            var clients = new[]
+            {
+                new Client { ClientId = "Test1", FirstName = "Oleg", LastName = "Musiyenko"}
+            };
+
+            _context.Clients.AddRange(clients);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        private async Task SeedCarExpertsAsync(CancellationToken cancellationToken)
+        {
+            var carExperts = new[]
+            {
+                new CarExpert { CarExpertId = "Test2", Name = "Oleg", Level = "Senior"}
+            };
+
+            _context.CarExperts.AddRange(carExperts);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        private async Task SeedAutomobilesAsync(CancellationToken cancellationToken)
+        {
+            var automobiles = new[]
+            {
+                new Automobile {AutomobileId = "Test3", CarExpertId = "Test2", ClientId = "Test1", Brand = "Mercedes-Benz", Color = "Black", Model ="A220", PlateNumber = "7777", Year = "2021" }
+            };
+
+            _context.Automobiles.AddRange(automobiles);
 
             await _context.SaveChangesAsync(cancellationToken);
         }
