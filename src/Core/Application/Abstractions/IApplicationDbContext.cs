@@ -13,6 +13,12 @@ namespace AspNetCoreSpa.Application.Abstractions
 
         DbSet<Customer> Customers { get; set; }
 
+        DbSet<Client> Clients { get; set; }
+
+        DbSet<CarExpert> CarExperts { get; set; }
+
+        DbSet<Automobile> Automobiles { get; set; }
+
         DbSet<Employee> Employees { get; set; }
 
         DbSet<EmployeeTerritory> EmployeeTerritories { get; set; }

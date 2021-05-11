@@ -4,14 +4,16 @@ using AspNetCoreSpa.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210511092218_migrationname1234")]
+    partial class migrationname1234
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -312,188 +314,6 @@ namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
                     b.HasIndex("TerritoryId");
 
                     b.ToTable("EmployeeTerritories");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.Game", b =>
-                {
-                    b.Property<int>("GameId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int>("GameDifficultyLevelId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("GameId");
-
-                    b.HasIndex("GameDifficultyLevelId");
-
-                    b.ToTable("Games");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.GameDeveloper", b =>
-                {
-                    b.Property<int>("GameDeveloperId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DeveloperLevelId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("GameDeveloperId");
-
-                    b.HasIndex("DeveloperLevelId");
-
-                    b.ToTable("GameDevelopers");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.GameDeveloperLevel", b =>
-                {
-                    b.Property<int>("GameDeveloperLevelId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("GameDeveloperLevelId");
-
-                    b.ToTable("GameDeveloperLevels");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.GameDifficultyLevel", b =>
-                {
-                    b.Property<int>("GameDifficultyLevelId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("GameDifficultyLevelId");
-
-                    b.ToTable("GameDifficultyLevels");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.GameFeature", b =>
-                {
-                    b.Property<int>("GameFeatureId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("DeveloperId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DevelopmentStateId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GameId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("GameFeatureId");
-
-                    b.HasIndex("DeveloperId");
-
-                    b.HasIndex("DevelopmentStateId");
-
-                    b.HasIndex("GameId");
-
-                    b.ToTable("GameFeatures");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.GameFeatureDevelopmentState", b =>
-                {
-                    b.Property<int>("GameFeatureDevelopmentStateId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("GameFeatureDevelopmentStateId");
-
-                    b.ToTable("GameFeatureDevelopmentStates");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.GameGenre", b =>
-                {
-                    b.Property<int>("GameGenreId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("GameGenreId");
-
-                    b.ToTable("GameGenres");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.ManyToMany.GameGenreGame", b =>
-                {
-                    b.Property<int>("GameGenreId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GameId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GameGenreId", "GameId");
-
-                    b.HasIndex("GameId");
-
-                    b.ToTable("GameGenreGames");
                 });
 
             modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.Order", b =>
@@ -835,79 +655,6 @@ namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
                     b.Navigation("Territory");
                 });
 
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.Game", b =>
-                {
-                    b.HasOne("AspNetCoreSpa.Domain.Entities.GameDifficultyLevel", "DifficultyLevel")
-                        .WithMany("GamesOfDifficultyLevel")
-                        .HasForeignKey("GameDifficultyLevelId")
-                        .HasConstraintName("FK_Games_GameDifficultyLevels")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DifficultyLevel");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.GameDeveloper", b =>
-                {
-                    b.HasOne("AspNetCoreSpa.Domain.Entities.GameDeveloperLevel", "DeveloperLevel")
-                        .WithMany("DevelopersOfLevel")
-                        .HasForeignKey("DeveloperLevelId")
-                        .HasConstraintName("FK_GameDevelopers_GameDeveloperLevels")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DeveloperLevel");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.GameFeature", b =>
-                {
-                    b.HasOne("AspNetCoreSpa.Domain.Entities.GameDeveloper", "Developer")
-                        .WithMany("GameFeaturesAssigned")
-                        .HasForeignKey("DeveloperId")
-                        .HasConstraintName("FK_GameFeatures_GameDevelopers")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AspNetCoreSpa.Domain.Entities.GameFeatureDevelopmentState", "DevelopmentState")
-                        .WithMany("FeaturesInState")
-                        .HasForeignKey("DevelopmentStateId")
-                        .HasConstraintName("FK_GameFeatures_DevelopmentStates")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AspNetCoreSpa.Domain.Entities.Game", "Game")
-                        .WithMany("FeaturesInDevelopment")
-                        .HasForeignKey("GameId")
-                        .HasConstraintName("FK_GameFeatures_Games")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Developer");
-
-                    b.Navigation("DevelopmentState");
-
-                    b.Navigation("Game");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.ManyToMany.GameGenreGame", b =>
-                {
-                    b.HasOne("AspNetCoreSpa.Domain.Entities.GameGenre", "GameGenre")
-                        .WithMany("GamesOfGenre")
-                        .HasForeignKey("GameGenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AspNetCoreSpa.Domain.Entities.Game", "Game")
-                        .WithMany("Genres")
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Game");
-
-                    b.Navigation("GameGenre");
-                });
-
             modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.Order", b =>
                 {
                     b.HasOne("AspNetCoreSpa.Domain.Entities.Customer", "Customer")
@@ -992,38 +739,6 @@ namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
                     b.Navigation("EmployeeTerritories");
 
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.Game", b =>
-                {
-                    b.Navigation("FeaturesInDevelopment");
-
-                    b.Navigation("Genres");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.GameDeveloper", b =>
-                {
-                    b.Navigation("GameFeaturesAssigned");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.GameDeveloperLevel", b =>
-                {
-                    b.Navigation("DevelopersOfLevel");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.GameDifficultyLevel", b =>
-                {
-                    b.Navigation("GamesOfDifficultyLevel");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.GameFeatureDevelopmentState", b =>
-                {
-                    b.Navigation("FeaturesInState");
-                });
-
-            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.GameGenre", b =>
-                {
-                    b.Navigation("GamesOfGenre");
                 });
 
             modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.Order", b =>

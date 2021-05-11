@@ -14,6 +14,7 @@
 		<RootNamespace>AspNetCoreSpa.Web</RootNamespace>
 		<AssemblyName>AspNetCoreSpa.Web</AssemblyName>
 		<UserSecretsId>59517051-9d6b-4801-9469-232f804fdd0f</UserSecretsId>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -56,7 +57,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="ClientApp\src\app\+examples\examples\gamestore\game-developers\game-developers.component.ts" />
+	  <None Remove="ClientApp\src\app\+examples\examples\car\automobiles\automobiles.component.ts" />
+	  <None Remove="ClientApp\src\app\+examples\examples\car\car-experts\car-experts.component.ts" />
+	  <None Remove="ClientApp\src\app\+examples\examples\car\car.component.ts" />
+	  <None Remove="ClientApp\src\app\+examples\examples\car\car.module.ts" />
+	  <None Remove="ClientApp\src\app\+examples\examples\car\car.routes.ts" />
+	  <None Remove="ClientApp\src\app\+examples\examples\car\clients\clients.component.ts" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -64,13 +70,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <TypeScriptCompile Include="ClientApp\src\app\+examples\examples\gamestore\game-developers\game-developers.component.ts" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Update="translations.csv">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <TypeScriptCompile Include="ClientApp\src\app\+examples\examples\car\automobiles\automobiles.component.ts" />
+	  <TypeScriptCompile Include="ClientApp\src\app\+examples\examples\car\car-experts\car-experts.component.ts" />
+	  <TypeScriptCompile Include="ClientApp\src\app\+examples\examples\car\car.component.ts" />
+	  <TypeScriptCompile Include="ClientApp\src\app\+examples\examples\car\car.module.ts" />
+	  <TypeScriptCompile Include="ClientApp\src\app\+examples\examples\car\car.routes.ts" />
+	  <TypeScriptCompile Include="ClientApp\src\app\+examples\examples\car\clients\clients.component.ts" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

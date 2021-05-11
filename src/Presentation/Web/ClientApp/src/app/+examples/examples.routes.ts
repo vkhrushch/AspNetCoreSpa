@@ -17,6 +17,11 @@ export const routes: Routes = [
         data: { displayText: 'Shop' },
     },
     {
+        path: 'car',
+        loadChildren: () => import('./examples/car/car.module').then(m => m.CarModule),
+        data: { displayText: 'Car' },
+    },
+    {
         path: 'gamestore',
         loadChildren: () => import('./examples/gamestore/gamestore.module').then(m => m.GameStoreModule),
         data: { displayText: 'GameStore' },

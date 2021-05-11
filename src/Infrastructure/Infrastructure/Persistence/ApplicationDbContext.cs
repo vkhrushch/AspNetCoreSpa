@@ -29,6 +29,12 @@ namespace AspNetCoreSpa.Infrastructure.Persistence
 
         public DbSet<Customer> Customers { get; set; }
 
+        public DbSet<Client> Clients { get; set; }
+
+        public DbSet<CarExpert> CarExperts { get; set; }
+
+        public DbSet<Automobile> Automobiles { get; set; }
+
         public DbSet<Employee> Employees { get; set; }
 
         public DbSet<EmployeeTerritory> EmployeeTerritories { get; set; }
