@@ -133,7 +133,7 @@ export interface IAutomobilesClient {
     getAll(): Observable<AutomobilesListVm>;
     get(id: number): Observable<AutomobileDetailVm>;
     create(command: CreateAutomobileCommand): Observable<void>;
-    update(id: string, command: UpdateAutomobileCommand): Observable<void>;
+    update(id: number, automobile: AutomobileLookupDto): Observable<void>;
     delete(id: number): Observable<void>;
 }
 
@@ -306,14 +306,14 @@ export class AutomobilesClient implements IAutomobilesClient {
         }
     }
 
-    update(id: string, command: UpdateAutomobileCommand): Observable<void> {
+    update(id: number, automobile: AutomobileLookupDto): Observable<void> {
         let url_ = this.baseUrl + "/api/Automobiles/Update/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(command);
+        const content_ = JSON.stringify(automobile);
 
         let options_ : any = {
             body: content_,
@@ -2492,70 +2492,6 @@ export class CreateAutomobileCommand implements ICreateAutomobileCommand {
 }
 
 export interface ICreateAutomobileCommand {
-    id?: number;
-    clientId?: number;
-    carExpertId?: number;
-    plateNumber?: string | undefined;
-    color?: string | undefined;
-    brand?: string | undefined;
-    model?: string | undefined;
-    year?: string | undefined;
-}
-
-export class UpdateAutomobileCommand implements IUpdateAutomobileCommand {
-    id?: number;
-    clientId?: number;
-    carExpertId?: number;
-    plateNumber?: string | undefined;
-    color?: string | undefined;
-    brand?: string | undefined;
-    model?: string | undefined;
-    year?: string | undefined;
-
-    constructor(data?: IUpdateAutomobileCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.clientId = _data["clientId"];
-            this.carExpertId = _data["carExpertId"];
-            this.plateNumber = _data["plateNumber"];
-            this.color = _data["color"];
-            this.brand = _data["brand"];
-            this.model = _data["model"];
-            this.year = _data["year"];
-        }
-    }
-
-    static fromJS(data: any): UpdateAutomobileCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new UpdateAutomobileCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["clientId"] = this.clientId;
-        data["carExpertId"] = this.carExpertId;
-        data["plateNumber"] = this.plateNumber;
-        data["color"] = this.color;
-        data["brand"] = this.brand;
-        data["model"] = this.model;
-        data["year"] = this.year;
-        return data; 
-    }
-}
-
-export interface IUpdateAutomobileCommand {
     id?: number;
     clientId?: number;
     carExpertId?: number;

@@ -1,4 +1,5 @@
-﻿using AspNetCoreSpa.Application.Features.Automobiles.Commands.CreateAutomobile;
+﻿using AspNetCoreSpa.Application.Abstractions;
+using AspNetCoreSpa.Application.Features.Automobiles.Commands.CreateAutomobile;
 using AspNetCoreSpa.Application.Features.Automobiles.Commands.DeleteAutomobile;
 using AspNetCoreSpa.Application.Features.Automobiles.Commands.UpdateAutomobile;
 using AspNetCoreSpa.Application.Features.Automobiles.Queries.GetAutomobileDetail;
@@ -10,10 +11,10 @@ using System.Threading.Tasks;
 namespace AspNetCoreSpa.Web.Controllers
 {
     public class AutomobilesController : BaseController
-    {
+    {        
         [HttpGet]
         public async Task<ActionResult<AutomobilesListVm>> GetAll()
-        {
+        {           
             var vm = await Mediator.Send(new GetAutomobilesListQuery());
 
             return Ok(vm);
@@ -42,9 +43,10 @@ namespace AspNetCoreSpa.Web.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update([FromBody] UpdateAutomobileCommand command)
+        public async Task<IActionResult> Update(int id, AutomobileLookupDto automobile)
         {
-            await Mediator.Send(command);
+            await Mediator.Send(new UpdateAutomobileCommand {CarExpertId = automobile.CarExpertId, Brand = automobile.Brand, ClientId = automobile.ClientId, Color = automobile.Color, Model = automobile.Model, PlateNumber = automobile.PlateNumber, Year = automobile.Year});
+            
 
             return NoContent();
         }
@@ -55,8 +57,8 @@ namespace AspNetCoreSpa.Web.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await Mediator.Send(new DeleteAutomobileCommand { Id = id });
-
-            return NoContent();
+            var vm = await Mediator.Send(new GetAutomobilesListQuery());
+            return Ok(vm);
         }
     }
 }
