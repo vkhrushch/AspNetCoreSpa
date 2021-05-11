@@ -22,7 +22,7 @@ namespace AspNetCoreSpa.Web.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<AutomobileDetailVm>> Get(string id)
+        public async Task<ActionResult<AutomobileDetailVm>> Get(int id)
         {
             var vm = await Mediator.Send(new GetAutomobileDetailQuery { Id = id });
 
@@ -52,7 +52,7 @@ namespace AspNetCoreSpa.Web.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
             await Mediator.Send(new DeleteAutomobileCommand { Id = id });
 

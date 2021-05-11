@@ -4,6 +4,6 @@ namespace AspNetCoreSpa.Application.Features.CarExperts.Queries.GetCarExpertDeta
 {
     public class GetCarExpertDetailQuery : IRequest<CarExpertDetailVm>
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
     }
 }

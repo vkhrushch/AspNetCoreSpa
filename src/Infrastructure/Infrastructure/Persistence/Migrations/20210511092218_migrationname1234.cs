@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
 {
-    public partial class migrationname : Migration
+    public partial class migrationname1234 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,9 +11,9 @@ namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
                 name: "Automobiles",
                 columns: table => new
                 {
-                    AutomobileId = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: false),
-                    ClientId = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    CarExpertId = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    AutomobileId = table.Column<int>(type: "int", maxLength: 7, nullable: false),
+                    ClientId = table.Column<int>(type: "int", maxLength: 60, nullable: false),
+                    CarExpertId = table.Column<int>(type: "int", maxLength: 60, nullable: false),
                     PlateNumber = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
                     Color = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
                     Brand = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
@@ -29,7 +29,7 @@ namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
                 name: "CarExperts",
                 columns: table => new
                 {
-                    CarExpertId = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: false),
+                    CarExpertId = table.Column<int>(type: "int", maxLength: 7, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
                     Level = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true)
                 },
@@ -57,7 +57,7 @@ namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
                 name: "Clients",
                 columns: table => new
                 {
-                    ClientId = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: false),
+                    ClientId = table.Column<int>(type: "int", maxLength: 7, nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true)
                 },

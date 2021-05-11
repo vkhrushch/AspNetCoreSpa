@@ -4,6 +4,6 @@ namespace AspNetCoreSpa.Application.Features.Automobiles.Commands.DeleteAutomobi
 {
     public class DeleteAutomobileCommand : IRequest
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
     }
 }

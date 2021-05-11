@@ -8,7 +8,7 @@ namespace AspNetCoreSpa.Application.Features.Clients.Commands.CreateClient
 {
     public class ClientCreated : INotification
     {
-        public string ClientId { get; set; }
+        public int ClientId { get; set; }
 
         public class CustomerCreatedHandler : INotificationHandler<ClientCreated>
         {

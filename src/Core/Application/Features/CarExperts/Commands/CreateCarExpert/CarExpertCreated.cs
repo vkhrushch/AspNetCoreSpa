@@ -8,7 +8,7 @@ namespace AspNetCoreSpa.Application.Features.CarExperts.Commands.CreateCarExpert
 {
     public class CarExpertCreated : INotification
     {
-        public string CarExpertId { get; set; }
+        public int CarExpertId { get; set; }
 
         public class CarExpertCreatedHandler : INotificationHandler<CarExpertCreated>
         {

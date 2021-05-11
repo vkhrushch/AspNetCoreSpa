@@ -192,7 +192,8 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
         {
             var clients = new[]
             {
-                new Client { ClientId = "Test1", FirstName = "Oleg", LastName = "Musiyenko"}
+                new Client { ClientId=1, FirstName = "Oleg", LastName = "Musiyenko"},
+                new Client {  ClientId=2, FirstName = "Oleg1", LastName = "Musiyenko"}
             };
 
             _context.Clients.AddRange(clients);
@@ -204,7 +205,7 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
         {
             var carExperts = new[]
             {
-                new CarExpert { CarExpertId = "Test2", Name = "Oleg", Level = "Senior"}
+                new CarExpert { CarExpertId = 1, Name = "Oleg", Level = "Senior"}
             };
 
             _context.CarExperts.AddRange(carExperts);
@@ -216,7 +217,7 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
         {
             var automobiles = new[]
             {
-                new Automobile {AutomobileId = "Test3", CarExpertId = "Test2", ClientId = "Test1", Brand = "Mercedes-Benz", Color = "Black", Model ="A220", PlateNumber = "7777", Year = "2021" }
+                new Automobile {AutomobileId=1, ClientId=1, CarExpertId=1, Brand = "Mercedes-Benz", Color = "Black", Model ="A220", PlateNumber = "7777", Year = "2021" }
             };
 
             _context.Automobiles.AddRange(automobiles);

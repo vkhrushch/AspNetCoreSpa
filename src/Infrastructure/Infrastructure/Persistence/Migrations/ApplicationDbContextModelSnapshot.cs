@@ -21,21 +21,21 @@ namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.Automobile", b =>
                 {
-                    b.Property<string>("AutomobileId")
+                    b.Property<int>("AutomobileId")
                         .HasMaxLength(7)
-                        .HasColumnType("nvarchar(7)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Brand")
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<string>("CarExpertId")
+                    b.Property<int>("CarExpertId")
                         .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                        .HasColumnType("int");
 
-                    b.Property<string>("ClientId")
+                    b.Property<int>("ClientId")
                         .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Color")
                         .HasMaxLength(60)
@@ -60,9 +60,9 @@ namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.CarExpert", b =>
                 {
-                    b.Property<string>("CarExpertId")
+                    b.Property<int>("CarExpertId")
                         .HasMaxLength(7)
-                        .HasColumnType("nvarchar(7)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Level")
                         .HasMaxLength(60)
@@ -103,9 +103,9 @@ namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.Client", b =>
                 {
-                    b.Property<string>("ClientId")
+                    b.Property<int>("ClientId")
                         .HasMaxLength(7)
-                        .HasColumnType("nvarchar(7)");
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(60)

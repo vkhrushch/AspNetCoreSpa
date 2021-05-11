@@ -8,9 +8,9 @@ namespace AspNetCoreSpa.Application.Features.Automobiles.Commands.CreateAutomobi
 {
     public class CreateAutomobileCommand : IRequest
     {
-        public string Id { get; set; }
-        public string ClientId { get; set; }
-        public string CarExpertId { get; set; }
+        public int Id { get; set; }
+        public int ClientId { get; set; }
+        public int CarExpertId { get; set; }
         public string PlateNumber { get; set; }
         public string Color { get; set; }
         public string Brand { get; set; }

@@ -8,7 +8,7 @@ namespace AspNetCoreSpa.Application.Features.Automobiles.Commands.CreateAutomobi
 {
     public class AutomobileCreated : INotification
     {
-        public string AutomobileId { get; set; }
+        public int AutomobileId { get; set; }
 
         public class CarExpertCreatedHandler : INotificationHandler<AutomobileCreated>
         {

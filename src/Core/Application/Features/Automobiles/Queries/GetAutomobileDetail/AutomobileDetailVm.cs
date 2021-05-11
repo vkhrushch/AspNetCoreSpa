@@ -6,9 +6,9 @@ namespace AspNetCoreSpa.Application.Features.Automobiles.Queries.GetAutomobileDe
 {
     public class AutomobileDetailVm : IMapFrom<Automobile>
     {
-        public string Id { get; set; }
-        public string ClientId { get; set; }
-        public string CarExpertId { get; set; }
+        public int Id { get; set; }
+        public int ClientId { get; set; }
+        public int CarExpertId { get; set; }
         public string PlateNumber { get; set; }
         public string Color { get; set; }
         public string Brand { get; set; }

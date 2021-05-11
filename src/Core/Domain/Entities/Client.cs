@@ -8,7 +8,7 @@ namespace AspNetCoreSpa.Domain.Entities
 {
     public class Client
     {
-        public string ClientId { get; set; }
+        public int ClientId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
     }

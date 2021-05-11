@@ -70,7 +70,7 @@ export class AutomobilesComponent implements OnInit {
     editAuto(automobile: AutomobileLookupDto) {
         console.log(automobile);
 
-        this.automobilesClient.update(automobile.automobileId, UpdateAutomobileCommand.fromJS(automobile));
+        this.automobilesClient.update(automobile.automobileId.toString(), UpdateAutomobileCommand.fromJS(automobile));
         // this.productsClient.delete(product.productId).subscribe(this.getData);
     }
 

@@ -4,6 +4,6 @@ namespace AspNetCoreSpa.Application.Features.Automobiles.Queries.GetAutomobileDe
 {
     public class GetAutomobileDetailQuery : IRequest<AutomobileDetailVm>
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
     }
 }

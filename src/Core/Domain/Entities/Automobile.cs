@@ -8,9 +8,9 @@ namespace AspNetCoreSpa.Domain.Entities
 {
     public class Automobile
     {
-        public string AutomobileId { get; set; }
-        public string ClientId { get; set; }
-        public string CarExpertId { get; set; }
+        public int AutomobileId { get; set; }
+        public int ClientId { get; set; }
+        public int CarExpertId { get; set; }
         public string PlateNumber { get; set; }
         public string Color { get; set; }
         public string Brand { get; set; }

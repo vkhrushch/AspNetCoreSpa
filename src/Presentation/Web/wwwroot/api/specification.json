@@ -95,8 +95,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "nullable": true
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
           }
@@ -233,8 +233,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "nullable": true
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
           }
@@ -298,8 +298,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "nullable": true
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
           }
@@ -436,8 +436,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "nullable": true
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
           }
@@ -606,8 +606,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "nullable": true
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
           }
@@ -744,8 +744,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "nullable": true
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
           }
@@ -1469,16 +1469,16 @@
         "additionalProperties": false,
         "properties": {
           "automobileId": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "clientId": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "carExpertId": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "plateNumber": {
             "type": "string",
@@ -1507,16 +1507,16 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "clientId": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "carExpertId": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "plateNumber": {
             "type": "string",
@@ -1579,16 +1579,16 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "clientId": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "carExpertId": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "plateNumber": {
             "type": "string",
@@ -1617,16 +1617,16 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "clientId": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "carExpertId": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "plateNumber": {
             "type": "string",
@@ -1682,8 +1682,8 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "name": {
             "type": "string",
@@ -1700,8 +1700,8 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "name": {
             "type": "string",
@@ -1718,8 +1718,8 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "name": {
             "type": "string",
@@ -1827,8 +1827,8 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "firstName": {
             "type": "string",
@@ -1845,8 +1845,8 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "firstName": {
             "type": "string",
@@ -1863,8 +1863,8 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "firstName": {
             "type": "string",

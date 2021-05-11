@@ -131,10 +131,10 @@ export class AppClient implements IAppClient {
 
 export interface IAutomobilesClient {
     getAll(): Observable<AutomobilesListVm>;
-    get(id: string | null): Observable<AutomobileDetailVm>;
+    get(id: number): Observable<AutomobileDetailVm>;
     create(command: CreateAutomobileCommand): Observable<void>;
     update(id: string, command: UpdateAutomobileCommand): Observable<void>;
-    delete(id: string | null): Observable<void>;
+    delete(id: number): Observable<void>;
 }
 
 @Injectable({
@@ -198,7 +198,7 @@ export class AutomobilesClient implements IAutomobilesClient {
         return _observableOf<AutomobilesListVm>(<any>null);
     }
 
-    get(id: string | null): Observable<AutomobileDetailVm> {
+    get(id: number): Observable<AutomobileDetailVm> {
         let url_ = this.baseUrl + "/api/Automobiles/Get/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -364,7 +364,7 @@ export class AutomobilesClient implements IAutomobilesClient {
         return _observableOf<void>(<any>null);
     }
 
-    delete(id: string | null): Observable<void> {
+    delete(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/Automobiles/Delete/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -421,10 +421,10 @@ export class AutomobilesClient implements IAutomobilesClient {
 
 export interface ICarExpertClient {
     getAll(): Observable<CarExpertsListVm>;
-    get(id: string | null): Observable<CarExpertDetailVm>;
+    get(id: number): Observable<CarExpertDetailVm>;
     create(command: CreateCarExpertCommand): Observable<void>;
     update(id: string, command: UpdateCarExpertCommand): Observable<void>;
-    delete(id: string | null): Observable<void>;
+    delete(id: number): Observable<void>;
 }
 
 @Injectable({
@@ -488,7 +488,7 @@ export class CarExpertClient implements ICarExpertClient {
         return _observableOf<CarExpertsListVm>(<any>null);
     }
 
-    get(id: string | null): Observable<CarExpertDetailVm> {
+    get(id: number): Observable<CarExpertDetailVm> {
         let url_ = this.baseUrl + "/api/CarExpert/Get/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -654,7 +654,7 @@ export class CarExpertClient implements ICarExpertClient {
         return _observableOf<void>(<any>null);
     }
 
-    delete(id: string | null): Observable<void> {
+    delete(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/CarExpert/Delete/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -883,10 +883,10 @@ export class CategoriesClient implements ICategoriesClient {
 
 export interface IClientsClient {
     getAll(): Observable<ClientsListVm>;
-    get(id: string | null): Observable<ClientDetailVm>;
+    get(id: number): Observable<ClientDetailVm>;
     create(command: CreateClientCommand): Observable<void>;
     update(id: string, command: UpdateClientCommand): Observable<void>;
-    delete(id: string | null): Observable<void>;
+    delete(id: number): Observable<void>;
 }
 
 @Injectable({
@@ -950,7 +950,7 @@ export class ClientsClient implements IClientsClient {
         return _observableOf<ClientsListVm>(<any>null);
     }
 
-    get(id: string | null): Observable<ClientDetailVm> {
+    get(id: number): Observable<ClientDetailVm> {
         let url_ = this.baseUrl + "/api/Clients/Get/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1116,7 +1116,7 @@ export class ClientsClient implements IClientsClient {
         return _observableOf<void>(<any>null);
     }
 
-    delete(id: string | null): Observable<void> {
+    delete(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/Clients/Delete/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2243,9 +2243,9 @@ export interface IAutomobilesListVm {
 }
 
 export class AutomobileLookupDto implements IAutomobileLookupDto {
-    automobileId?: string | undefined;
-    clientId?: string | undefined;
-    carExpertId?: string | undefined;
+    automobileId?: number;
+    clientId?: number;
+    carExpertId?: number;
     plateNumber?: string | undefined;
     color?: string | undefined;
     brand?: string | undefined;
@@ -2296,9 +2296,9 @@ export class AutomobileLookupDto implements IAutomobileLookupDto {
 }
 
 export interface IAutomobileLookupDto {
-    automobileId?: string | undefined;
-    clientId?: string | undefined;
-    carExpertId?: string | undefined;
+    automobileId?: number;
+    clientId?: number;
+    carExpertId?: number;
     plateNumber?: string | undefined;
     color?: string | undefined;
     brand?: string | undefined;
@@ -2307,9 +2307,9 @@ export interface IAutomobileLookupDto {
 }
 
 export class AutomobileDetailVm implements IAutomobileDetailVm {
-    id?: string | undefined;
-    clientId?: string | undefined;
-    carExpertId?: string | undefined;
+    id?: number;
+    clientId?: number;
+    carExpertId?: number;
     plateNumber?: string | undefined;
     color?: string | undefined;
     brand?: string | undefined;
@@ -2360,9 +2360,9 @@ export class AutomobileDetailVm implements IAutomobileDetailVm {
 }
 
 export interface IAutomobileDetailVm {
-    id?: string | undefined;
-    clientId?: string | undefined;
-    carExpertId?: string | undefined;
+    id?: number;
+    clientId?: number;
+    carExpertId?: number;
     plateNumber?: string | undefined;
     color?: string | undefined;
     brand?: string | undefined;
@@ -2439,9 +2439,9 @@ export interface IProblemDetails {
 }
 
 export class CreateAutomobileCommand implements ICreateAutomobileCommand {
-    id?: string | undefined;
-    clientId?: string | undefined;
-    carExpertId?: string | undefined;
+    id?: number;
+    clientId?: number;
+    carExpertId?: number;
     plateNumber?: string | undefined;
     color?: string | undefined;
     brand?: string | undefined;
@@ -2492,9 +2492,9 @@ export class CreateAutomobileCommand implements ICreateAutomobileCommand {
 }
 
 export interface ICreateAutomobileCommand {
-    id?: string | undefined;
-    clientId?: string | undefined;
-    carExpertId?: string | undefined;
+    id?: number;
+    clientId?: number;
+    carExpertId?: number;
     plateNumber?: string | undefined;
     color?: string | undefined;
     brand?: string | undefined;
@@ -2503,9 +2503,9 @@ export interface ICreateAutomobileCommand {
 }
 
 export class UpdateAutomobileCommand implements IUpdateAutomobileCommand {
-    id?: string | undefined;
-    clientId?: string | undefined;
-    carExpertId?: string | undefined;
+    id?: number;
+    clientId?: number;
+    carExpertId?: number;
     plateNumber?: string | undefined;
     color?: string | undefined;
     brand?: string | undefined;
@@ -2556,9 +2556,9 @@ export class UpdateAutomobileCommand implements IUpdateAutomobileCommand {
 }
 
 export interface IUpdateAutomobileCommand {
-    id?: string | undefined;
-    clientId?: string | undefined;
-    carExpertId?: string | undefined;
+    id?: number;
+    clientId?: number;
+    carExpertId?: number;
     plateNumber?: string | undefined;
     color?: string | undefined;
     brand?: string | undefined;
@@ -2651,7 +2651,7 @@ export interface ICarExpertLookupDto {
 }
 
 export class CarExpertDetailVm implements ICarExpertDetailVm {
-    id?: string | undefined;
+    id?: number;
     name?: string | undefined;
     level?: string | undefined;
 
@@ -2689,13 +2689,13 @@ export class CarExpertDetailVm implements ICarExpertDetailVm {
 }
 
 export interface ICarExpertDetailVm {
-    id?: string | undefined;
+    id?: number;
     name?: string | undefined;
     level?: string | undefined;
 }
 
 export class CreateCarExpertCommand implements ICreateCarExpertCommand {
-    id?: string | undefined;
+    id?: number;
     name?: string | undefined;
     level?: string | undefined;
 
@@ -2733,13 +2733,13 @@ export class CreateCarExpertCommand implements ICreateCarExpertCommand {
 }
 
 export interface ICreateCarExpertCommand {
-    id?: string | undefined;
+    id?: number;
     name?: string | undefined;
     level?: string | undefined;
 }
 
 export class UpdateCarExpertCommand implements IUpdateCarExpertCommand {
-    id?: string | undefined;
+    id?: number;
     name?: string | undefined;
     level?: string | undefined;
 
@@ -2777,7 +2777,7 @@ export class UpdateCarExpertCommand implements IUpdateCarExpertCommand {
 }
 
 export interface IUpdateCarExpertCommand {
-    id?: string | undefined;
+    id?: number;
     name?: string | undefined;
     level?: string | undefined;
 }
@@ -3011,7 +3011,7 @@ export interface IClientLookupDto {
 }
 
 export class ClientDetailVm implements IClientDetailVm {
-    id?: string | undefined;
+    id?: number;
     firstName?: string | undefined;
     lastName?: string | undefined;
 
@@ -3049,13 +3049,13 @@ export class ClientDetailVm implements IClientDetailVm {
 }
 
 export interface IClientDetailVm {
-    id?: string | undefined;
+    id?: number;
     firstName?: string | undefined;
     lastName?: string | undefined;
 }
 
 export class CreateClientCommand implements ICreateClientCommand {
-    id?: string | undefined;
+    id?: number;
     firstName?: string | undefined;
     lastName?: string | undefined;
 
@@ -3093,13 +3093,13 @@ export class CreateClientCommand implements ICreateClientCommand {
 }
 
 export interface ICreateClientCommand {
-    id?: string | undefined;
+    id?: number;
     firstName?: string | undefined;
     lastName?: string | undefined;
 }
 
 export class UpdateClientCommand implements IUpdateClientCommand {
-    id?: string | undefined;
+    id?: number;
     firstName?: string | undefined;
     lastName?: string | undefined;
 
@@ -3137,7 +3137,7 @@ export class UpdateClientCommand implements IUpdateClientCommand {
 }
 
 export interface IUpdateClientCommand {
-    id?: string | undefined;
+    id?: number;
     firstName?: string | undefined;
     lastName?: string | undefined;
 }
