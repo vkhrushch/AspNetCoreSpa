@@ -1,0 +1,43 @@
+﻿<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Create Auto</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeWindow()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form>
+        <div class="form-group">
+            <br />
+            <label>ClientId</label>
+            <br />
+            <input #clientId name="clientId" type="text">
+            <br />
+            <label>CarExpertId</label>
+            <br />
+            <input #carExpertId name="carExpertId" type="text">
+            <br />
+            <label>Plate number</label>
+            <br />
+            <input #plateNumber name="plateNumber" type="text">
+            <br />
+            <label>Model</label>
+            <br />
+            <input #model name="model" type="text">
+            <br />
+            <label>Color</label>
+            <br />
+            <input #color name="color" type="text">
+            <br />
+            <label>Brand</label>
+            <br />
+            <input #brand name="brand" type="text">
+            <br />
+            <label>Year</label>
+            <br />
+            <input #year name="year" type="text">
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-outline-dark" (click)="createAuto(plateNumber.value, model.value, color.value, brand.value, year.value, clientId.value, carExpertId.value)">Create</button>
+        </div>
+    </form>
+</div>

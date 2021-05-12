@@ -137,11 +137,11 @@
         ],
         "operationId": "Automobiles_Create",
         "requestBody": {
-          "x-name": "command",
+          "x-name": "automobile",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateAutomobileCommand"
+                "$ref": "#/components/schemas/AutomobileLookupDto"
               }
             }
           },
@@ -1572,44 +1572,6 @@
             "type": "object",
             "nullable": true,
             "additionalProperties": {}
-          }
-        }
-      },
-      "CreateAutomobileCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "clientId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "carExpertId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "plateNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "color": {
-            "type": "string",
-            "nullable": true
-          },
-          "brand": {
-            "type": "string",
-            "nullable": true
-          },
-          "model": {
-            "type": "string",
-            "nullable": true
-          },
-          "year": {
-            "type": "string",
-            "nullable": true
           }
         }
       },

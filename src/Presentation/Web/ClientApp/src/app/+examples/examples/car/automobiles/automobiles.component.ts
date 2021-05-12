@@ -1,8 +1,9 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { AutomobilesClient, AutomobileLookupDto } from '@app/api-client';
+import { AutomobilesClient, AutomobileLookupDto} from '@app/api-client';
 import { GridColumn, GridFieldType } from '@app/shared';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { AutomobilesEditComponent } from './edit/edit.component';
+import { AutomobilesCreateComponent } from './create/create.component';
 
 @Component({
     selector: 'appc-automobiles',
@@ -65,6 +66,7 @@ export class AutomobilesComponent implements OnInit {
             ];            
         });
     }
+
     getData() {
         this.automobilesClient.getAll().subscribe(res => {
             this.automobiles = res.automobiles;
@@ -75,16 +77,24 @@ export class AutomobilesComponent implements OnInit {
         modalRef.componentInstance.automobile = automobile;
         modalRef.result
             .then(() => {
-                this.automobilesClient.update(modalRef.componentInstance.automobile.automobileId, modalRef.componentInstance.automobile).subscribe(() => { this.getData });
+                this.getData;
             })
-            .catch();
+            .catch(() => { });
     }
-
     deleteAuto(automobile: AutomobileLookupDto) {
         if (window.confirm('Are you sure you want to delete this item?')) {
             this.automobilesClient.delete(automobile.automobileId).subscribe(() => {
                 this.getData();
             });
         }
+    }
+    createAuto(automobile: AutomobileLookupDto) {
+        const modalRef = this.modalService.open(AutomobilesCreateComponent);
+        modalRef.componentInstance.automobile = automobile;
+        modalRef.result
+            .then(() => {
+                this.getData;
+            })
+            .catch(() => { });
     }
 }

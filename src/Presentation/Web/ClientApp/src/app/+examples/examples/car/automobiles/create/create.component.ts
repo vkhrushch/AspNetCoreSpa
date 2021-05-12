@@ -4,25 +4,27 @@ import { AutomobilesClient, AutomobileLookupDto } from '@app/api-client';
 
 @Component({
     selector: 'appc-edit',
-    templateUrl: './edit.component.html',
-    styleUrls: ['./edit.component.scss'],
+    templateUrl: './create.component.html',
 })
-export class AutomobilesEditComponent{
+export class AutomobilesCreateComponent {
 
     constructor(private modalService: NgbModal, private activeModal: NgbActiveModal, private automobilesClient: AutomobilesClient) { }
     public automobile: AutomobileLookupDto;
 
-    closeMe() {
+    closeWindow() {
         this.modalService.dismissAll();
     };
 
-    sendMe(plateNumber, color, brand, model, year) {
+    createAuto(plateNumber, model, color, brand, year, clientId, carExpertId) {
+        this.automobile = new AutomobileLookupDto();
         this.automobile.plateNumber = plateNumber;
+        this.automobile.model = model;
         this.automobile.color = color;
         this.automobile.brand = brand;
-        this.automobile.model = model;
         this.automobile.year = year;
-        this.automobilesClient.update(this.automobile.automobileId, this.automobile).subscribe(() => { });
+        this.automobile.clientId = clientId;
+        this.automobile.carExpertId = carExpertId;
+        this.automobilesClient.create(this.automobile).subscribe(() => { });
         this.activeModal.close();
     }
 }

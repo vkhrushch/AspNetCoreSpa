@@ -9,12 +9,26 @@
         <div class="form-group">
             <label>Plate number</label>
             <br />
-            <input name="plateNumber" [(ngModel)]="automobile.plateNumber" type="text" value={{automobile.plateNumber}}>
-            <!--<br />
-            <input name="autoPlateNumber" [(ngModel)]="autoPlateNumber" type="text">-->
+            <input #plateNumber name="plateNumber" [(ngModel)]="automobile.plateNumber" type="text" value={{automobile.plateNumber}}>
+            <br />
+            <label>Color</label>
+            <br />
+            <input #color name="color" [(ngModel)]="automobile.color" type="text" value={{automobile.color}}>
+            <br />
+            <label>Brand</label>
+            <br />
+            <input #brand name="brand" [(ngModel)]="automobile.brand" type="text" value={{automobile.brand}}>
+            <br />
+            <label>Model</label>
+            <br />
+            <input #model name="model" [(ngModel)]="automobile.model" type="text" value={{automobile.model}}>
+            <br />
+            <label>Year</label>
+            <br />
+            <input #year name="year" [(ngModel)]="automobile.year" type="text" value={{automobile.year}}>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-outline-dark" (click)="sendMe(plateNumber.value, color.value, brand.value, model.value, year.value)">Save</button>
         </div>
     </form>
-</div>
-<div class="modal-footer">
-    <button type="submit" class="btn btn-outline-dark" (click)="sendMe()">Save</button>
 </div>

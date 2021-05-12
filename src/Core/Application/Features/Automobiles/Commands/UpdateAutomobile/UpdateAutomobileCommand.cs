@@ -1,5 +1,6 @@
 ﻿using AspNetCoreSpa.Application.Abstractions;
 using AspNetCoreSpa.Application.Exceptions;
+using AspNetCoreSpa.Application.Features.Automobiles.Queries.GetAutomobileList;
 using AspNetCoreSpa.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,14 +11,7 @@ namespace AspNetCoreSpa.Application.Features.Automobiles.Commands.UpdateAutomobi
 {
     public class UpdateAutomobileCommand : IRequest
     {
-        public int Id { get; set; }
-        public int ClientId { get; set; }
-        public int CarExpertId { get; set; }
-        public string PlateNumber { get; set; }
-        public string Color { get; set; }
-        public string Brand { get; set; }
-        public string Model { get; set; }
-        public string Year { get; set; }
+        public AutomobileLookupDto Auto { get; set; }
 
         public class Handler : IRequestHandler<UpdateAutomobileCommand>
         {
@@ -31,20 +25,20 @@ namespace AspNetCoreSpa.Application.Features.Automobiles.Commands.UpdateAutomobi
             public async Task<Unit> Handle(UpdateAutomobileCommand request, CancellationToken cancellationToken)
             {
                 var entity = await _context.Automobiles
-                    .SingleOrDefaultAsync(c => c.AutomobileId == request.Id, cancellationToken);
+                    .SingleOrDefaultAsync(c => c.AutomobileId == request.Auto.AutomobileId, cancellationToken);
 
                 if (entity == null)
                 {
-                    throw new NotFoundException(nameof(Automobile), request.Id);
+                    throw new NotFoundException(nameof(Automobile), request.Auto.AutomobileId);
                 }
 
-                entity.ClientId = request.ClientId;
-                entity.CarExpertId = request.CarExpertId;
-                entity.Brand = request.Brand;
-                entity.Color = request.Color;
-                entity.Model = request.Model;
-                entity.PlateNumber = request.PlateNumber;
-                entity.Year = request.Year;
+                entity.ClientId = request.Auto.ClientId;
+                entity.CarExpertId = request.Auto.CarExpertId;
+                entity.Brand = request.Auto.Brand;
+                entity.Color = request.Auto.Color;
+                entity.Model = request.Auto.Model;
+                entity.PlateNumber = request.Auto.PlateNumber;
+                entity.Year = request.Auto.Year;
 
                 await _context.SaveChangesAsync(cancellationToken);
 
