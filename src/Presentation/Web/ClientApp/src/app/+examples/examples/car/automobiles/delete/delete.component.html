@@ -1,0 +1,26 @@
+﻿<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Are you sure you want to delete this item?</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeMe()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form>
+        <div class="form-group">
+
+            <label>Plate number:  {{automobile.plateNumber}}</label>
+            <br />
+            <label>Color: {{automobile.color}}</label>
+            <br />
+            <label>Brand: {{automobile.brand}}</label>
+            <br />
+            <label>Model: {{automobile.model}}</label>
+            <br />
+            <label>Year: {{automobile.year}}</label>
+            <br />
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-dark" (click)="sendMe()">Delete</button>
+            </div>
+        </div>
+    </form>
+</div>

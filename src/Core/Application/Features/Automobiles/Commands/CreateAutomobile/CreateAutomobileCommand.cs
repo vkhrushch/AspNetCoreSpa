@@ -1,6 +1,8 @@
 ﻿using AspNetCoreSpa.Application.Abstractions;
+using AspNetCoreSpa.Application.Features.Automobiles.Queries.GetAutomobileList;
 using AspNetCoreSpa.Domain.Entities;
 using MediatR;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,14 +10,7 @@ namespace AspNetCoreSpa.Application.Features.Automobiles.Commands.CreateAutomobi
 {
     public class CreateAutomobileCommand : IRequest
     {
-        public int Id { get; set; }
-        public int ClientId { get; set; }
-        public int CarExpertId { get; set; }
-        public string PlateNumber { get; set; }
-        public string Color { get; set; }
-        public string Brand { get; set; }
-        public string Model { get; set; }
-        public string Year { get; set; }
+        public AutomobileLookupDto Auto { get; set; }
 
         public class Handler : IRequestHandler<CreateAutomobileCommand>
         {
@@ -30,16 +25,17 @@ namespace AspNetCoreSpa.Application.Features.Automobiles.Commands.CreateAutomobi
 
             public async Task<Unit> Handle(CreateAutomobileCommand request, CancellationToken cancellationToken)
             {
+               var nextId = _context.Automobiles.Max(i => i.AutomobileId) + 1;
                 var entity = new Automobile
                 {
-                    AutomobileId = request.Id,
-                    ClientId = request.ClientId,
-                    CarExpertId = request.CarExpertId,
-                    Brand = request.Brand,
-                    Color = request.Color,
-                    Model = request.Model,
-                    PlateNumber = request.PlateNumber,
-                    Year = request.Year,
+                    AutomobileId = nextId,
+                    ClientId = request.Auto.ClientId,
+                    CarExpertId = request.Auto.CarExpertId,
+                    Brand = request.Auto.Brand,
+                    Color = request.Auto.Color,
+                    Model = request.Auto.Model,
+                    PlateNumber = request.Auto.PlateNumber,
+                    Year = request.Auto.Year,
                 };
 
                 _context.Automobiles.Add(entity);

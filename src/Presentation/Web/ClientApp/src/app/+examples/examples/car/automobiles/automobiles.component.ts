@@ -1,6 +1,10 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { AutomobilesClient, AutomobileLookupDto, UpdateAutomobileCommand } from '@app/api-client';
+import { AutomobilesClient, AutomobileLookupDto} from '@app/api-client';
 import { GridColumn, GridFieldType } from '@app/shared';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { AutomobilesEditComponent } from './edit/edit.component';
+import { AutomobilesCreateComponent } from './create/create.component';
+import { AutomobilesDeleteComponent } from './delete/delete.component';
 
 @Component({
     selector: 'appc-automobiles',
@@ -8,7 +12,7 @@ import { GridColumn, GridFieldType } from '@app/shared';
     styleUrls: ['./automobiles.component.scss'],
 })
 export class AutomobilesComponent implements OnInit {
-    constructor(private automobilesClient: AutomobilesClient) { }
+    constructor(private automobilesClient: AutomobilesClient, private modalService: NgbModal) { }
     automobiles: AutomobileLookupDto[];
     columns: GridColumn[];
     ngOnInit() {
@@ -58,23 +62,47 @@ export class AutomobilesComponent implements OnInit {
                         primaryLabel: 'Edit Automobile',
                         secondaryLabel: 'Delete Automobile',
                     },
+                    width: 300
                 },
             ];            
         });
     }
+
     getData() {
         this.automobilesClient.getAll().subscribe(res => {
             this.automobiles = res.automobiles;
         });
     }
     editAuto(automobile: AutomobileLookupDto) {
-        console.log(automobile);
-
-        this.automobilesClient.update(automobile.automobileId.toString(), UpdateAutomobileCommand.fromJS(automobile));
-        // this.productsClient.delete(product.productId).subscribe(this.getData);
+        const modalRef = this.modalService.open(AutomobilesEditComponent);
+        modalRef.componentInstance.automobile = automobile;
+        modalRef.result
+            .then(() => {
+                this.getData;
+            })
+            .catch(() => { });
     }
-
     deleteAuto(automobile: AutomobileLookupDto) {
-        this.automobilesClient.delete(automobile.automobileId).subscribe(this.getData);
+        //if (window.confirm('Are you sure you want to delete this item?')) {
+        //    this.automobilesClient.delete(automobile.automobileId).subscribe(() => {
+        //        this.getData();
+        //    });
+        //}
+        const modalRef = this.modalService.open(AutomobilesDeleteComponent);
+        modalRef.componentInstance.automobile = automobile;
+        modalRef.result
+            .then(() => {
+                this.getData;
+            })
+            .catch(() => { });
+    }
+    createAuto(automobile: AutomobileLookupDto) {
+        const modalRef = this.modalService.open(AutomobilesCreateComponent);
+        modalRef.componentInstance.automobile = automobile;
+        modalRef.result
+            .then(() => {
+                this.getData;
+            })
+            .catch(() => { });
     }
 }

@@ -58,6 +58,8 @@
 
 	<ItemGroup>
 	  <None Remove="ClientApp\src\app\+examples\examples\car\automobiles\automobiles.component.ts" />
+	  <None Remove="ClientApp\src\app\+examples\examples\car\automobiles\create\create.component.ts" />
+	  <None Remove="ClientApp\src\app\+examples\examples\car\automobiles\edit\edit.component.ts" />
 	  <None Remove="ClientApp\src\app\+examples\examples\car\car-experts\car-experts.component.ts" />
 	  <None Remove="ClientApp\src\app\+examples\examples\car\car.component.ts" />
 	  <None Remove="ClientApp\src\app\+examples\examples\car\car.module.ts" />
@@ -77,6 +79,8 @@
 
 	<ItemGroup>
 	  <TypeScriptCompile Include="ClientApp\src\app\+examples\examples\car\automobiles\automobiles.component.ts" />
+	  <TypeScriptCompile Include="ClientApp\src\app\+examples\examples\car\automobiles\create\create.component.ts" />
+	  <TypeScriptCompile Include="ClientApp\src\app\+examples\examples\car\automobiles\edit\edit.component.ts" />
 	  <TypeScriptCompile Include="ClientApp\src\app\+examples\examples\car\car-experts\car-experts.component.ts" />
 	  <TypeScriptCompile Include="ClientApp\src\app\+examples\examples\car\car.component.ts" />
 	  <TypeScriptCompile Include="ClientApp\src\app\+examples\examples\car\car.module.ts" />
