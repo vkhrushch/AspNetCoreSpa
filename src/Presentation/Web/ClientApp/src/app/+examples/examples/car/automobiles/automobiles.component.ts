@@ -4,6 +4,7 @@ import { GridColumn, GridFieldType } from '@app/shared';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { AutomobilesEditComponent } from './edit/edit.component';
 import { AutomobilesCreateComponent } from './create/create.component';
+import { AutomobilesDeleteComponent } from './delete/delete.component';
 
 @Component({
     selector: 'appc-automobiles',
@@ -82,11 +83,18 @@ export class AutomobilesComponent implements OnInit {
             .catch(() => { });
     }
     deleteAuto(automobile: AutomobileLookupDto) {
-        if (window.confirm('Are you sure you want to delete this item?')) {
-            this.automobilesClient.delete(automobile.automobileId).subscribe(() => {
-                this.getData();
-            });
-        }
+        //if (window.confirm('Are you sure you want to delete this item?')) {
+        //    this.automobilesClient.delete(automobile.automobileId).subscribe(() => {
+        //        this.getData();
+        //    });
+        //}
+        const modalRef = this.modalService.open(AutomobilesDeleteComponent);
+        modalRef.componentInstance.automobile = automobile;
+        modalRef.result
+            .then(() => {
+                this.getData;
+            })
+            .catch(() => { });
     }
     createAuto(automobile: AutomobileLookupDto) {
         const modalRef = this.modalService.open(AutomobilesCreateComponent);
