@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { ExamplesComponent } from './examples.component';
+import { ChatRoomsComponent } from './examples/chat-rooms/chat-rooms.component';
 import { FormsPlaygroundComponent } from './examples/forms-playground/forms-playground.component';
 
 export const routes: Routes = [
@@ -25,5 +26,10 @@ export const routes: Routes = [
         path: 'gamestore',
         loadChildren: () => import('./examples/gamestore/gamestore.module').then(m => m.GameStoreModule),
         data: { displayText: 'GameStore' },
-    }
+    },
+    {
+        path: 'chat-rooms',
+        loadChildren: () => import('./examples/chat-rooms/chat-rooms.module').then(m => m.ChatRoomsModule),
+        data: { displayText: 'ChatRooms' },
+    },
 ];

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 
 // import { PrebootModule } from 'preboot';
 
@@ -16,23 +17,24 @@ import { HomeComponent } from './home/home.component';
 import { SharedModule } from './shared';
 
 @NgModule({
-  declarations: [
-    // Components
-    AppComponent,
-    HomeComponent,
-    FooterComponent,
-    HeaderComponent,
-    PrivacyComponent,
-  ],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    // PrebootModule.withConfig({ appRoot: 'appc-root' }),
-    BrowserAnimationsModule,
-    BrowserTransferStateModule,
-    RouterModule.forRoot(routes, { initialNavigation: 'enabled', relativeLinkResolution: 'legacy' }),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    SharedModule,
-  ],
-  bootstrap: [AppComponent],
+    declarations: [
+        // Components
+        AppComponent,
+        HomeComponent,
+        FooterComponent,
+        HeaderComponent,
+        PrivacyComponent
+    ],
+    imports: [
+        BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+        // PrebootModule.withConfig({ appRoot: 'appc-root' }),
+        BrowserAnimationsModule,
+        BrowserTransferStateModule,
+        RouterModule.forRoot(routes, { initialNavigation: 'enabled', relativeLinkResolution: 'legacy' }),
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+        SharedModule,
+        FormsModule
+    ],
+    bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

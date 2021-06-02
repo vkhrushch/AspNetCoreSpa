@@ -158,6 +158,7 @@ namespace AspNetCoreSpa.STS.Areas.Identity.Pages.Account
 
             LoginProvider = info.LoginProvider;
             ReturnUrl = returnUrl;
+            //_loggedUser = _userManager;
             return Page();
         }
     }

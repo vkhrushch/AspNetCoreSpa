@@ -137,11 +137,11 @@
         ],
         "operationId": "Automobiles_Create",
         "requestBody": {
-          "x-name": "command",
+          "x-name": "automobile",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateAutomobileCommand"
+                "$ref": "#/components/schemas/AutomobileLookupDto"
               }
             }
           },
@@ -182,22 +182,23 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             },
-            "x-position": 2
+            "x-position": 1
           }
         ],
         "requestBody": {
-          "x-name": "command",
+          "x-name": "automobile",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateAutomobileCommand"
+                "$ref": "#/components/schemas/AutomobileLookupDto"
               }
             }
           },
           "required": true,
-          "x-position": 1
+          "x-position": 2
         },
         "responses": {
           "204": {
@@ -535,6 +536,110 @@
           "Categories"
         ],
         "operationId": "Categories_Delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/ChatRooms/GetAll": {
+      "get": {
+        "tags": [
+          "ChatRooms"
+        ],
+        "operationId": "ChatRooms_GetAll",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatRoomsListVm"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/ChatRooms/Create": {
+      "post": {
+        "tags": [
+          "ChatRooms"
+        ],
+        "operationId": "ChatRooms_Create",
+        "parameters": [
+          {
+            "name": "chatRoomName",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/ChatRooms/Delete/{id}": {
+      "delete": {
+        "tags": [
+          "ChatRooms"
+        ],
+        "operationId": "ChatRooms_Delete",
         "parameters": [
           {
             "name": "id",
@@ -1526,6 +1631,182 @@
         ]
       }
     },
+    "/api/Messages/GetAll": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "operationId": "Messages_GetAll",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageListVm"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Messages/Get/{id}": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "operationId": "Messages_Get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageListVm"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Messages/GetAllByRoom": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "operationId": "Messages_GetAllByRoom",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageListVm"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Messages/Create": {
+      "post": {
+        "tags": [
+          "Messages"
+        ],
+        "operationId": "Messages_Create",
+        "parameters": [
+          {
+            "name": "chatRoomId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "text",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
     "/api/Products/GetAll": {
       "get": {
         "tags": [
@@ -1980,82 +2261,6 @@
           }
         }
       },
-      "CreateAutomobileCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "clientId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "carExpertId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "plateNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "color": {
-            "type": "string",
-            "nullable": true
-          },
-          "brand": {
-            "type": "string",
-            "nullable": true
-          },
-          "model": {
-            "type": "string",
-            "nullable": true
-          },
-          "year": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "UpdateAutomobileCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "clientId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "carExpertId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "plateNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "color": {
-            "type": "string",
-            "nullable": true
-          },
-          "brand": {
-            "type": "string",
-            "nullable": true
-          },
-          "model": {
-            "type": "string",
-            "nullable": true
-          },
-          "year": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
       "CarExpertsListVm": {
         "type": "object",
         "additionalProperties": false,
@@ -2197,6 +2402,33 @@
           "picture": {
             "type": "string",
             "format": "byte",
+            "nullable": true
+          }
+        }
+      },
+      "ChatRoomsListVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "chatRooms": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ChatRoomLookupDto"
+            }
+          }
+        }
+      },
+      "ChatRoomLookupDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "roomId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
             "nullable": true
           }
         }
@@ -3157,6 +3389,45 @@
                 "$ref": "#/components/schemas/GameDifficultyLevel"
               }
             ]
+          }
+        }
+      },
+      "MessageListVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "messages": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/MessageLookupDto"
+            }
+          }
+        }
+      },
+      "MessageLookupDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "chatRoomId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          },
+          "messageTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "format": "guid"
           }
         }
       },

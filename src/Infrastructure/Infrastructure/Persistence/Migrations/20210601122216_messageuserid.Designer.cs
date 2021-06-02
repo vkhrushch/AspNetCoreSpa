@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210511134916_GamesAndCarsMigration")]
-    partial class GamesAndCarsMigration
+    [Migration("20210601122216_messageuserid")]
+    partial class messageuserid
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -101,6 +101,23 @@ namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.ChatRoom", b =>
+                {
+                    b.Property<int>("ChatRoomId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("ChatRoomId");
+
+                    b.ToTable("ChatRooms");
                 });
 
             modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.Client", b =>
@@ -498,6 +515,33 @@ namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
                     b.ToTable("GameGenreGames");
                 });
 
+            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.Message", b =>
+                {
+                    b.Property<int>("MessageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("ChatRoomId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MessageTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MessageId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.Order", b =>
                 {
                     b.Property<int>("OrderId")
@@ -617,6 +661,24 @@ namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Order Details");
+                });
+
+            modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.Participant", b =>
+                {
+                    b.Property<int>("ParticipantId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("ChatRoomId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ParticipantId");
+
+                    b.ToTable("Participants");
                 });
 
             modelBuilder.Entity("AspNetCoreSpa.Domain.Entities.Product", b =>

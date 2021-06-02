@@ -4,6 +4,8 @@ using AspNetCoreSpa.Application.Abstractions;
 using AspNetCoreSpa.Common;
 using AspNetCoreSpa.Domain.Entities;
 using AspNetCoreSpa.Domain.Entities.ManyToMany;
+using AspNetCoreSpa.Infrastructure.Identity.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreSpa.Infrastructure.Persistence
@@ -28,6 +30,12 @@ namespace AspNetCoreSpa.Infrastructure.Persistence
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Customer> Customers { get; set; }
+
+        public DbSet<ChatRoom> ChatRooms { get; set; }
+
+        public DbSet<Participant> Participants { get; set; }
+
+        public DbSet<Message> Messages { get; set; }
 
         public DbSet<Client> Clients { get; set; }
 

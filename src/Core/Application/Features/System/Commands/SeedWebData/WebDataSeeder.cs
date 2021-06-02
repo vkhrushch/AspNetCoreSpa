@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AspNetCoreSpa.Application.Abstractions;
 using AspNetCoreSpa.Domain.Entities.ManyToMany;
+using AspNetCoreSpa.Application.Extensions;
 
 namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
 {
@@ -22,6 +23,8 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
         private readonly Dictionary<int, Product> Products = new Dictionary<int, Product>();
         private readonly List<GameGenre> _gameGenres = new List<GameGenre>();
         private readonly List<GameDifficultyLevel> _gameDifficultyLevels = new List<GameDifficultyLevel>();
+        private readonly List<ChatRoom> _chatRooms = new List<ChatRoom>();
+        private readonly List<Message> _messages = new List<Message>();
         private readonly List<Game> _games = new List<Game>();
         private readonly List<GameDeveloperLevel> _gameDeveloperLevels = new List<GameDeveloperLevel>();
         private readonly List<GameDeveloper> _gameDevelopers = new List<GameDeveloper>();
@@ -35,7 +38,7 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
 
         public async Task SeedAllAsync(CancellationToken cancellationToken)
         {
-            if(_context.Customers.Any())
+            if (_context.Customers.Any())
             {
                 return;
             }
@@ -64,6 +67,10 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
 
             await SeedOrdersAsync(cancellationToken);
 
+            await SeedChatRoomAsync(cancellationToken);
+
+            await SeedMessageAsync(cancellationToken);
+
             // Games section
 
             await SeedGameGenresAsync(cancellationToken);
@@ -80,10 +87,37 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
 
             await SeedGameFeaturesAsync(cancellationToken);
 
-            await SeedGameGenreGamesAsync(cancellationToken);
+            await SeedGameGenreGamesAsync(cancellationToken);            
 
             // TODO revisit later
             //await SeedUsersAsync(cancellationToken);
+        }
+
+        private async Task SeedChatRoomAsync(CancellationToken cancellationToken)
+        {
+            _chatRooms.AddRange(new[]
+            {
+                new ChatRoom() { Name = "OlegRoom" },
+                new ChatRoom() { Name = "TestRooms" },
+                new ChatRoom() { Name = "Test1" }
+            });
+
+            _context.ChatRooms.AddRange(_chatRooms);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        private async Task SeedMessageAsync(CancellationToken cancellationToken)
+        {
+            _messages.AddRange(new[]
+            {
+                new Message() {ChatRoomId = 1, Text = "Hello", MessageTime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), UserName = "admin@admin.com", UserId = 1.ToGuid()},
+                new Message() {ChatRoomId = 1, Text = "How are you?", MessageTime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), UserName = "admin@admin.com", UserId = 1.ToGuid()}
+                
+            });
+
+            _context.Messages.AddRange(_messages);
+
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
         private async Task SeedGameGenresAsync(CancellationToken cancellationToken)
@@ -95,11 +129,11 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
                 new GameGenre() { Name = "Strategy" }
             });
 
-             _context.GameGenres.AddRange(_gameGenres);
+            _context.GameGenres.AddRange(_gameGenres);
 
             await _context.SaveChangesAsync(cancellationToken);
-        }
-        
+        }       
+
         private async Task SeedGameDifficultyLevelsAsync(CancellationToken cancellationToken)
         {
             _gameDifficultyLevels.AddRange(new[]
@@ -196,8 +230,8 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
                 new GameGenreGame() { GameId = 3, GameGenreId = 3, Game = _games[2], GameGenre = _gameGenres[2] }
             };
 
-             _context.GameGenreGames.AddRange(gameGenreGames);
-            
+            _context.GameGenreGames.AddRange(gameGenreGames);
+
             await _context.SaveChangesAsync(cancellationToken);
         }
 

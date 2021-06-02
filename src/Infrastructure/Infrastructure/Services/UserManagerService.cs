@@ -6,6 +6,7 @@ using AspNetCoreSpa.Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using AspNetCoreSpa.Infrastructure.Identity;
+using AspNetCoreSpa.Application.Extensions;
 
 namespace AspNetCoreSpa.Infrastructure.Services
 {

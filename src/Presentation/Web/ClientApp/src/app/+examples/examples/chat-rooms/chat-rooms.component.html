@@ -1,0 +1,14 @@
+﻿<div>
+    <appc-messages class="messages" [room]="selectedRoom"> </appc-messages>
+    <div class="rooms">
+        <h2 class="chatHeader">Chat Rooms</h2>
+        <ul class="chatRooms">
+            <li *ngFor="let room of chatRooms"
+                [class.selected]="room === selectedRoom"
+                (click)="onSelect(room)">
+                <span>{{room.name}}</span>
+            </li>
+        </ul>
+    </div>
+</div>
+

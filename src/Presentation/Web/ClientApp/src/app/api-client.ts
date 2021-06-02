@@ -132,8 +132,8 @@ export class AppClient implements IAppClient {
 export interface IAutomobilesClient {
     getAll(): Observable<AutomobilesListVm>;
     get(id: number): Observable<AutomobileDetailVm>;
-    create(command: CreateAutomobileCommand): Observable<void>;
-    update(id: string, command: UpdateAutomobileCommand): Observable<void>;
+    create(automobile: AutomobileLookupDto): Observable<void>;
+    update(id: number, automobile: AutomobileLookupDto): Observable<void>;
     delete(id: number): Observable<void>;
 }
 
@@ -256,11 +256,11 @@ export class AutomobilesClient implements IAutomobilesClient {
         return _observableOf<AutomobileDetailVm>(<any>null);
     }
 
-    create(command: CreateAutomobileCommand): Observable<void> {
+    create(automobile: AutomobileLookupDto): Observable<void> {
         let url_ = this.baseUrl + "/api/Automobiles/Create";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(command);
+        const content_ = JSON.stringify(automobile);
 
         let options_ : any = {
             body: content_,
@@ -306,14 +306,14 @@ export class AutomobilesClient implements IAutomobilesClient {
         }
     }
 
-    update(id: string, command: UpdateAutomobileCommand): Observable<void> {
+    update(id: number, automobile: AutomobileLookupDto): Observable<void> {
         let url_ = this.baseUrl + "/api/Automobiles/Update/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(command);
+        const content_ = JSON.stringify(automobile);
 
         let options_ : any = {
             body: content_,
@@ -828,6 +828,176 @@ export class CategoriesClient implements ICategoriesClient {
 
     delete(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/Categories/Delete/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+export interface IChatRoomsClient {
+    getAll(): Observable<ChatRoomsListVm>;
+    create(chatRoomName: string | null | undefined): Observable<void>;
+    delete(id: number): Observable<void>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ChatRoomsClient implements IChatRoomsClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getAll(): Observable<ChatRoomsListVm> {
+        let url_ = this.baseUrl + "/api/ChatRooms/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<ChatRoomsListVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ChatRoomsListVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<ChatRoomsListVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ChatRoomsListVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ChatRoomsListVm>(<any>null);
+    }
+
+    create(chatRoomName: string | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/ChatRooms/Create?";
+        if (chatRoomName !== undefined && chatRoomName !== null)
+            url_ += "chatRoomName=" + encodeURIComponent("" + chatRoomName) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let resultdefault: any = null;
+            let resultDatadefault = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            resultdefault = ProblemDetails.fromJS(resultDatadefault);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            }));
+        }
+    }
+
+    delete(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/ChatRooms/Delete/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -2269,6 +2439,246 @@ export class GamesClient implements IGamesClient {
     }
 }
 
+export interface IMessagesClient {
+    getAll(): Observable<MessageListVm>;
+    get(id: number): Observable<MessageListVm>;
+    getAllByRoom(id: number | undefined): Observable<MessageListVm>;
+    create(chatRoomId: number | undefined, text: string | null | undefined): Observable<void>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class MessagesClient implements IMessagesClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getAll(): Observable<MessageListVm> {
+        let url_ = this.baseUrl + "/api/Messages/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<MessageListVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MessageListVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<MessageListVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MessageListVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MessageListVm>(<any>null);
+    }
+
+    get(id: number): Observable<MessageListVm> {
+        let url_ = this.baseUrl + "/api/Messages/Get/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<MessageListVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MessageListVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<MessageListVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MessageListVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MessageListVm>(<any>null);
+    }
+
+    getAllByRoom(id: number | undefined): Observable<MessageListVm> {
+        let url_ = this.baseUrl + "/api/Messages/GetAllByRoom?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllByRoom(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllByRoom(<any>response_);
+                } catch (e) {
+                    return <Observable<MessageListVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MessageListVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllByRoom(response: HttpResponseBase): Observable<MessageListVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MessageListVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let resultdefault: any = null;
+            let resultDatadefault = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            resultdefault = ProblemDetails.fromJS(resultDatadefault);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            }));
+        }
+    }
+
+    create(chatRoomId: number | undefined, text: string | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Messages/Create?";
+        if (chatRoomId === null)
+            throw new Error("The parameter 'chatRoomId' cannot be null.");
+        else if (chatRoomId !== undefined)
+            url_ += "chatRoomId=" + encodeURIComponent("" + chatRoomId) + "&";
+        if (text !== undefined && text !== null)
+            url_ += "text=" + encodeURIComponent("" + text) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let resultdefault: any = null;
+            let resultDatadefault = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            resultdefault = ProblemDetails.fromJS(resultDatadefault);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            }));
+        }
+    }
+}
+
 export interface IProductsClient {
     getAll(): Observable<ProductsListVm>;
     get(id: number): Observable<ProductDetailVm>;
@@ -3018,134 +3428,6 @@ export interface IProblemDetails {
     extensions?: { [key: string]: any; } | undefined;
 }
 
-export class CreateAutomobileCommand implements ICreateAutomobileCommand {
-    id?: number;
-    clientId?: number;
-    carExpertId?: number;
-    plateNumber?: string | undefined;
-    color?: string | undefined;
-    brand?: string | undefined;
-    model?: string | undefined;
-    year?: string | undefined;
-
-    constructor(data?: ICreateAutomobileCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.clientId = _data["clientId"];
-            this.carExpertId = _data["carExpertId"];
-            this.plateNumber = _data["plateNumber"];
-            this.color = _data["color"];
-            this.brand = _data["brand"];
-            this.model = _data["model"];
-            this.year = _data["year"];
-        }
-    }
-
-    static fromJS(data: any): CreateAutomobileCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateAutomobileCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["clientId"] = this.clientId;
-        data["carExpertId"] = this.carExpertId;
-        data["plateNumber"] = this.plateNumber;
-        data["color"] = this.color;
-        data["brand"] = this.brand;
-        data["model"] = this.model;
-        data["year"] = this.year;
-        return data; 
-    }
-}
-
-export interface ICreateAutomobileCommand {
-    id?: number;
-    clientId?: number;
-    carExpertId?: number;
-    plateNumber?: string | undefined;
-    color?: string | undefined;
-    brand?: string | undefined;
-    model?: string | undefined;
-    year?: string | undefined;
-}
-
-export class UpdateAutomobileCommand implements IUpdateAutomobileCommand {
-    id?: number;
-    clientId?: number;
-    carExpertId?: number;
-    plateNumber?: string | undefined;
-    color?: string | undefined;
-    brand?: string | undefined;
-    model?: string | undefined;
-    year?: string | undefined;
-
-    constructor(data?: IUpdateAutomobileCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.clientId = _data["clientId"];
-            this.carExpertId = _data["carExpertId"];
-            this.plateNumber = _data["plateNumber"];
-            this.color = _data["color"];
-            this.brand = _data["brand"];
-            this.model = _data["model"];
-            this.year = _data["year"];
-        }
-    }
-
-    static fromJS(data: any): UpdateAutomobileCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new UpdateAutomobileCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["clientId"] = this.clientId;
-        data["carExpertId"] = this.carExpertId;
-        data["plateNumber"] = this.plateNumber;
-        data["color"] = this.color;
-        data["brand"] = this.brand;
-        data["model"] = this.model;
-        data["year"] = this.year;
-        return data; 
-    }
-}
-
-export interface IUpdateAutomobileCommand {
-    id?: number;
-    clientId?: number;
-    carExpertId?: number;
-    plateNumber?: string | undefined;
-    color?: string | undefined;
-    brand?: string | undefined;
-    model?: string | undefined;
-    year?: string | undefined;
-}
-
 export class CarExpertsListVm implements ICarExpertsListVm {
     carExperts?: CarExpertLookupDto[] | undefined;
 
@@ -3504,6 +3786,90 @@ export interface IUpsertCategoryCommand {
     name?: string | undefined;
     description?: string | undefined;
     picture?: string | undefined;
+}
+
+export class ChatRoomsListVm implements IChatRoomsListVm {
+    chatRooms?: ChatRoomLookupDto[] | undefined;
+
+    constructor(data?: IChatRoomsListVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["chatRooms"])) {
+                this.chatRooms = [] as any;
+                for (let item of _data["chatRooms"])
+                    this.chatRooms!.push(ChatRoomLookupDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ChatRoomsListVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new ChatRoomsListVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.chatRooms)) {
+            data["chatRooms"] = [];
+            for (let item of this.chatRooms)
+                data["chatRooms"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IChatRoomsListVm {
+    chatRooms?: ChatRoomLookupDto[] | undefined;
+}
+
+export class ChatRoomLookupDto implements IChatRoomLookupDto {
+    roomId?: number;
+    name?: string | undefined;
+
+    constructor(data?: IChatRoomLookupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.roomId = _data["roomId"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): ChatRoomLookupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ChatRoomLookupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["roomId"] = this.roomId;
+        data["name"] = this.name;
+        return data; 
+    }
+}
+
+export interface IChatRoomLookupDto {
+    roomId?: number;
+    name?: string | undefined;
 }
 
 export class ClientsListVm implements IClientsListVm {
@@ -5317,6 +5683,102 @@ export interface IUpdateGameCommand {
     id?: number;
     name?: string | undefined;
     difficulty?: GameDifficultyLevel | undefined;
+}
+
+export class MessageListVm implements IMessageListVm {
+    messages?: MessageLookupDto[] | undefined;
+
+    constructor(data?: IMessageListVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["messages"])) {
+                this.messages = [] as any;
+                for (let item of _data["messages"])
+                    this.messages!.push(MessageLookupDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): MessageListVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new MessageListVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.messages)) {
+            data["messages"] = [];
+            for (let item of this.messages)
+                data["messages"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IMessageListVm {
+    messages?: MessageLookupDto[] | undefined;
+}
+
+export class MessageLookupDto implements IMessageLookupDto {
+    chatRoomId?: number;
+    userName?: string | undefined;
+    text?: string | undefined;
+    messageTime?: string | undefined;
+    userId?: string;
+
+    constructor(data?: IMessageLookupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.chatRoomId = _data["chatRoomId"];
+            this.userName = _data["userName"];
+            this.text = _data["text"];
+            this.messageTime = _data["messageTime"];
+            this.userId = _data["userId"];
+        }
+    }
+
+    static fromJS(data: any): MessageLookupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MessageLookupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["chatRoomId"] = this.chatRoomId;
+        data["userName"] = this.userName;
+        data["text"] = this.text;
+        data["messageTime"] = this.messageTime;
+        data["userId"] = this.userId;
+        return data; 
+    }
+}
+
+export interface IMessageLookupDto {
+    chatRoomId?: number;
+    userName?: string | undefined;
+    text?: string | undefined;
+    messageTime?: string | undefined;
+    userId?: string;
 }
 
 export class ProductsListVm implements IProductsListVm {

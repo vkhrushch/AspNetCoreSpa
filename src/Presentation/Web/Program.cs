@@ -5,6 +5,7 @@ using AspNetCoreSpa.Application;
 using AspNetCoreSpa.Application.Abstractions;
 using AspNetCoreSpa.Application.Features.System.Commands.SeedLocalizationData;
 using AspNetCoreSpa.Application.Features.System.Commands.SeedWebData;
+using AspNetCoreSpa.Web.Seed;
 using MediatR;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;

@@ -3,14 +3,21 @@ using AspNetCoreSpa.Application;
 using AspNetCoreSpa.Application.Abstractions;
 using AspNetCoreSpa.Common;
 using AspNetCoreSpa.Infrastructure;
+using AspNetCoreSpa.Infrastructure.Identity;
+using AspNetCoreSpa.Infrastructure.Identity.Entities;
 using AspNetCoreSpa.Infrastructure.Localization;
 using AspNetCoreSpa.Infrastructure.Persistence;
+using AspNetCoreSpa.Infrastructure.Services;
+using AspNetCoreSpa.Web.Controllers;
+using AspNetCoreSpa.Web.Seed;
 using AspNetCoreSpa.Web.Services;
 using AspNetCoreSpa.Web.SignalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -43,7 +50,8 @@ namespace AspNetCoreSpa.Web
                 .AddInfrastructure(Configuration, HostingEnvironment)
                 .AddHealthChecks()
                 .AddDbContextCheck<LocalizationDbContext>()
-                .AddDbContextCheck<ApplicationDbContext>();
+                .AddDbContextCheck<ApplicationDbContext>()
+                .AddDbContextCheck<IdentityServerDbContext>();
 
             services.AddPersistence(Configuration);
 
@@ -65,7 +73,7 @@ namespace AspNetCoreSpa.Web
             {
                 configuration.RootPath = "ClientApp/dist/aspnetcorespa";
             });
-
+            services.AddHttpContextAccessor();
         }
         public void Configure(IApplicationBuilder app)
         {

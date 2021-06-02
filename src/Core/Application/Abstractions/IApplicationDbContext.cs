@@ -17,6 +17,12 @@ namespace AspNetCoreSpa.Application.Abstractions
 
         DbSet<CarExpert> CarExperts { get; set; }
 
+        DbSet<ChatRoom> ChatRooms { get; set; }
+
+        DbSet<Participant> Participants { get; set; }
+
+        DbSet<Message> Messages { get; set; }
+
         DbSet<Automobile> Automobiles { get; set; }
 
         DbSet<Employee> Employees { get; set; }
