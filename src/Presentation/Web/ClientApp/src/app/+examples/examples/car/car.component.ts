@@ -6,3 +6,5 @@
     styleUrls: ['./car.component.scss'],
 })
 export class CarComponent { }
+
+       

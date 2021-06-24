@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AspNetCoreSpa.Application.Features.Messages.Commands.CreateMessage
 {
-    public class CreateMessageCommand : IRequest
+    public class CreateMessageCommand : IRequest<int>
     {
         public int Id { get; set; }
         public int ChatRoomId { get; set; }
@@ -16,7 +16,7 @@ namespace AspNetCoreSpa.Application.Features.Messages.Commands.CreateMessage
         public string UserName { get; set; }
         public string Text { get; set; }
         public string MessageTime { get; set; }
-        public class Handler : IRequestHandler<CreateMessageCommand>
+        public class Handler : IRequestHandler<CreateMessageCommand, int>
         {
             private readonly IApplicationDbContext _context;
             private readonly IMediator _mediator;
@@ -31,7 +31,7 @@ namespace AspNetCoreSpa.Application.Features.Messages.Commands.CreateMessage
                 _currentUser = currentUser;
             }
 
-            public async Task<Unit> Handle(CreateMessageCommand request, CancellationToken cancellationToken)
+            public async Task<int> Handle(CreateMessageCommand request, CancellationToken cancellationToken)
             {
                 var entity = new Message
                 {
@@ -49,7 +49,7 @@ namespace AspNetCoreSpa.Application.Features.Messages.Commands.CreateMessage
 
                 await _mediator.Publish(new MessageCreated { MessageId = entity.MessageId }, cancellationToken);
 
-                return Unit.Value;
+                return entity.MessageId;
             }
         }
     }

@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Create Chat Room</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeWindow()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form>
+        <div class="form-group">
+            <label>Room name</label>
+            <br />
+            <input #roomName name="roomName" type="text">
+            <br />
+        </div>
+        <select (change)="selectChangeHandler($event)">
+            <option disabled selected>Select user</option>
+            <option *ngFor="let user of allUsers" [ngValue]="user1">
+                {{user}}
+            </option>
+        </select>
+
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-outline-dark" (click)="createChatRoom(roomName.value,user1)">Create</button>
+        </div>
+    </form>
+</div>

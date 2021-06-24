@@ -883,7 +883,8 @@ export class CategoriesClient implements ICategoriesClient {
 
 export interface IChatRoomsClient {
     getAll(): Observable<ChatRoomsListVm>;
-    create(chatRoomName: string | null | undefined): Observable<void>;
+    create(chatRoomName: string | null | undefined, participantNames: string[]): Observable<void>;
+    getAllChatRoomUsers(): Observable<string[]>;
     delete(id: number): Observable<void>;
 }
 
@@ -948,16 +949,20 @@ export class ChatRoomsClient implements IChatRoomsClient {
         return _observableOf<ChatRoomsListVm>(<any>null);
     }
 
-    create(chatRoomName: string | null | undefined): Observable<void> {
+    create(chatRoomName: string | null | undefined, participantNames: string[]): Observable<void> {
         let url_ = this.baseUrl + "/api/ChatRooms/Create?";
         if (chatRoomName !== undefined && chatRoomName !== null)
             url_ += "chatRoomName=" + encodeURIComponent("" + chatRoomName) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(participantNames);
+
         let options_ : any = {
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Content-Type": "application/json",
             })
         };
 
@@ -994,6 +999,58 @@ export class ChatRoomsClient implements IChatRoomsClient {
             return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
             }));
         }
+    }
+
+    getAllChatRoomUsers(): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/ChatRooms/GetAllChatRoomUsers";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllChatRoomUsers(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllChatRoomUsers(<any>response_);
+                } catch (e) {
+                    return <Observable<string[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllChatRoomUsers(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string[]>(<any>null);
     }
 
     delete(id: number): Observable<void> {
@@ -2443,7 +2500,7 @@ export interface IMessagesClient {
     getAll(): Observable<MessageListVm>;
     get(id: number): Observable<MessageListVm>;
     getAllByRoom(id: number | undefined): Observable<MessageListVm>;
-    create(chatRoomId: number | undefined, text: string | null | undefined): Observable<void>;
+    create(chatRoomId: number | undefined, text: string | null | undefined, userName: string | null | undefined): Observable<number>;
 }
 
 @Injectable({
@@ -2626,7 +2683,7 @@ export class MessagesClient implements IMessagesClient {
         }
     }
 
-    create(chatRoomId: number | undefined, text: string | null | undefined): Observable<void> {
+    create(chatRoomId: number | undefined, text: string | null | undefined, userName: string | null | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/Messages/Create?";
         if (chatRoomId === null)
             throw new Error("The parameter 'chatRoomId' cannot be null.");
@@ -2634,12 +2691,15 @@ export class MessagesClient implements IMessagesClient {
             url_ += "chatRoomId=" + encodeURIComponent("" + chatRoomId) + "&";
         if (text !== undefined && text !== null)
             url_ += "text=" + encodeURIComponent("" + text) + "&";
+        if (userName !== undefined && userName !== null)
+            url_ += "userName=" + encodeURIComponent("" + userName) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Accept": "application/json"
             })
         };
 
@@ -2650,32 +2710,33 @@ export class MessagesClient implements IMessagesClient {
                 try {
                     return this.processCreate(<any>response_);
                 } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
+                    return <Observable<number>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<void>><any>_observableThrow(response_);
+                return <Observable<number>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreate(response: HttpResponseBase): Observable<void> {
+    protected processCreate(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 204) {
+        if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
             }));
-        } else {
+        } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let resultdefault: any = null;
-            let resultDatadefault = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            resultdefault = ProblemDetails.fromJS(resultDatadefault);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
+        return _observableOf<number>(<any>null);
     }
 }
 
@@ -5730,6 +5791,7 @@ export interface IMessageListVm {
 }
 
 export class MessageLookupDto implements IMessageLookupDto {
+    messageId?: number;
     chatRoomId?: number;
     userName?: string | undefined;
     text?: string | undefined;
@@ -5747,6 +5809,7 @@ export class MessageLookupDto implements IMessageLookupDto {
 
     init(_data?: any) {
         if (_data) {
+            this.messageId = _data["messageId"];
             this.chatRoomId = _data["chatRoomId"];
             this.userName = _data["userName"];
             this.text = _data["text"];
@@ -5764,6 +5827,7 @@ export class MessageLookupDto implements IMessageLookupDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["messageId"] = this.messageId;
         data["chatRoomId"] = this.chatRoomId;
         data["userName"] = this.userName;
         data["text"] = this.text;
@@ -5774,6 +5838,7 @@ export class MessageLookupDto implements IMessageLookupDto {
 }
 
 export interface IMessageLookupDto {
+    messageId?: number;
     chatRoomId?: number;
     userName?: string | undefined;
     text?: string | undefined;

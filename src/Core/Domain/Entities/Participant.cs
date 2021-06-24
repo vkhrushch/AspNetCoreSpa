@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,8 +11,9 @@ namespace AspNetCoreSpa.Domain.Entities
     {
         public int ParticipantId;
 
+        [ForeignKey("ChatRoomId")]
         public int ChatRoomId;
 
-        public int UserId;
+        public Guid UserId;
     }
 }

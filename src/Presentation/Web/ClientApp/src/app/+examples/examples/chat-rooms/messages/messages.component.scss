@@ -1,0 +1,95 @@
+@import '../variables.scss';
+
+@media only screen and (max-width: 1026px) {
+
+    #message-header {
+        display: none;
+    }
+}
+
+.message-header {
+    background-color: $header-color;
+    border-radius: 3px;
+    color: white;
+    display: flex;
+    justify-content: center;
+
+    .message-title {
+        overflow: hidden;
+        white-space: nowrap;
+        margin: auto;
+    }
+
+}
+
+
+.messages {
+    overflow: auto;
+    max-height: $chat-height;
+    min-height: $chat-height;
+    display: flex;
+    flex-direction: column;
+
+    .outcome-container {
+        border: 2px solid #dedede;
+        background-color: white;
+        border-radius: 50px 30px 0 50px;
+        margin: 5px 0 0 15px;
+
+        .outcome-user {
+            color: #0078D7;
+        }
+
+        .outcome-time {
+            color: #aaa;
+            font-size: x-small;
+        }
+    }
+
+    .income-container {
+        border: 2px solid #dedede;
+        background-color: white;
+        border-radius: 30px 50px 50px 0;
+        margin: 5px 15px 0 0;
+
+        .income-user {
+            color: #CA5100;
+        }
+
+        .outcome-time {
+            color: #999;
+            font-size: x-small;
+        }
+    }
+}
+
+.send-meessage {
+    border-radius: 10px;
+
+    input[type=text], select {
+        width: 91%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .text-to-send {
+        width: 7%;
+        background-color: #999;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+}
+
+
+
+
+
+       
+
+
+   
+       

@@ -7,6 +7,7 @@ namespace AspNetCoreSpa.Application.Features.Messages.Queries.GetMessageList
 {
     public class MessageLookupDto : IMapFrom<Message>
     {
+        public int MessageId { get; set; }
         public int ChatRoomId { get; set; }
         public string UserName { get; set; }
         public string Text { get; set; }
@@ -15,6 +16,7 @@ namespace AspNetCoreSpa.Application.Features.Messages.Queries.GetMessageList
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Message, MessageLookupDto>()
+                .ForMember(d => d.MessageId, opt => opt.MapFrom(s => s.MessageId))
                 .ForMember(d => d.ChatRoomId, opt => opt.MapFrom(s => s.ChatRoomId))
                 .ForMember(d => d.MessageTime, opt => opt.MapFrom(s => s.MessageTime))
                 .ForMember(d => d.UserName, opt => opt.MapFrom(s => s.UserName))

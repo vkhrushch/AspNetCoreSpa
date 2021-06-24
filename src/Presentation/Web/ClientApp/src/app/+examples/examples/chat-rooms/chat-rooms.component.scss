@@ -1,0 +1,128 @@
+﻿/* HeroesComponent's private CSS styles */
+@import 'variables.scss';
+
+@media only screen and (max-width: 1026px) {
+
+    #chat-rooms {
+        width: 100%;
+        display: none;
+    }
+    #messages {
+        width: 100%;
+    }
+    #chat-rooms.showing {
+        display: block;
+    }
+    #messages.showing {
+        display: none;
+    }
+    #switch {
+        display: block;
+    }
+
+}
+.create-button1 {
+    background-color: $button-color;
+    color: $create-button-color;
+    border-radius: $border-radius;
+    display: none;
+}
+
+.main-body {
+    flex-flow: row wrap;
+    list-style: none;
+
+    .rooms {
+        background-color: $background-color;
+        width: 30%;
+        height: 25em;
+        border-block-color: black;
+        border: 1px solid groove;
+        border-radius: $border-radius;
+
+        .chat-header {
+            background-color: $header-color;
+            border-radius: 3px;
+            color: white;
+
+            .create-button {
+                background-color: $button-color;
+                color: $create-button-color;
+                border-radius: $border-radius;
+            }
+        }
+
+        .chat-rooms {
+            list-style-type: none;
+            border-radius: $border-radius;
+            overflow: auto;
+            max-height: $chat-height;
+            min-height: $chat-height;
+        }
+
+        .chat-rooms .badge {
+            display: inline-block;
+            font-size: small;
+            color: black;
+            background-color: $list-active-color;
+            line-height: 1em;
+            position: relative;
+            height: 1.8em;
+            margin-right: .8em;
+            border-radius: $border-radius;
+        }
+
+        .chat-rooms li:hover {
+            background-color: $list-hover-color;
+            border-radius: $border-radius;
+        }
+
+        .chat-rooms li.selected {
+            background-color: $list-hover-color;
+            border-radius: $border-radius;
+        }
+
+        .chat-rooms li.selected:hover {
+            background-color: $list-hover-color;
+            border-radius: $border-radius;
+        }
+
+        .chat-rooms li.selected:active {
+            background-color: $list-active-color;
+            color: black;
+            border-radius: $border-radius;
+        }
+
+        .chat-rooms li {
+            cursor: pointer;
+            position: relative;
+            color: black;
+            background-color: $list-active-color;
+            margin: .5em;
+            height: 2em;
+            border-radius: $border-radius;
+            border: groove;
+            border-width: 1px;
+        }
+
+        .chat-rooms li {
+            cursor: pointer;
+            position: relative;
+            color: black;
+            background-color: $list-active-color;
+            margin: .5em;
+            height: 2em;
+            border-radius: $border-radius;
+            border: groove;
+            border-width: 1px;
+        }
+    }
+
+    .messages {
+        list-style-type: none;
+        width: 70%;
+        background-color: aliceblue;
+        height: 25em;
+        border-radius: $border-radius;
+    }
+}

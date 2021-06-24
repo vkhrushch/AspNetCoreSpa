@@ -12,6 +12,7 @@ using AspNetCoreSpa.Web.Controllers;
 using AspNetCoreSpa.Web.Seed;
 using AspNetCoreSpa.Web.Services;
 using AspNetCoreSpa.Web.SignalR;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -45,6 +46,7 @@ namespace AspNetCoreSpa.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IApplicationService, ApplicationService>();
+            services.AddTransient<IUserInformation, UserInformation>();
 
             services.AddApplication()
                 .AddInfrastructure(Configuration, HostingEnvironment)

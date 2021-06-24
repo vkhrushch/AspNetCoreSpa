@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
 {
-    public partial class chatroom5202021 : Migration
+    public partial class newdb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -209,6 +209,37 @@ namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GameGenres", x => x.GameGenreId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    MessageId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ChatRoomId = table.Column<int>(type: "int", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MessageTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.MessageId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Participants",
+                columns: table => new
+                {
+                    ParticipantId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ChatRoomId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Participants", x => x.ParticipantId);
                 });
 
             migrationBuilder.CreateTable(
@@ -625,7 +656,13 @@ namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
                 name: "GameGenreGames");
 
             migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
                 name: "Order Details");
+
+            migrationBuilder.DropTable(
+                name: "Participants");
 
             migrationBuilder.DropTable(
                 name: "Territories");

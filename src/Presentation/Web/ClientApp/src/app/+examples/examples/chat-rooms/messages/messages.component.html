@@ -1,37 +1,35 @@
 <div *ngIf="room">
-    <h2 class="chatHeader">Messages in {{room.name}}</h2>
-
-    <div class="messages">
-        <div *ngFor="let message of messages">
+    <div class="message-header">
+        <h2 class="message-title text-center">Messages in {{room.name}}</h2>
+    </div>
+    <div #target class="messages" id="messages">
+        <div class="message-blocks" *ngFor="let message of messages">
             <div *ngIf="message.userName==='admin@admin.com'; then me; else other"></div>
             <ng-template #me>
-                <div class="containerMe">
-                    <span class="userMe">{{message.userName}}:</span>
+                <div class="outcome-container p-2">
+                    <span class="outcome-user mr-1 float-right">{{message.userName}}:</span>
                     <br />
-                    <span class="userMeText">{{message.text}}</span>
+                    <span class="outcome-text mr-3 float-right">{{message.text}}</span>
                     <br />
-                    <span class="time-right">{{message.messageTime}}</span>
+                    <span class="outcome-time float-right">{{message.messageTime}}</span>
                     <br />
                 </div>
             </ng-template>
 
             <ng-template #other>
-                <div class="containerOther">
-                    <span class="userOther">{{message.userName}}:</span>
+                <div class="income-container p-2">
+                    <span class="income-user ml-1">{{message.userName}}:</span>
                     <br />
-                    <span class="userOtherText">{{message.text}}</span>
+                    <span class="outcome-text ml-3 float-left">{{message.text}}</span>
                     <br />
-                    <span class="time-left">{{message.messageTime}}</span>
+                    <span class="outcome-time float-left">{{message.messageTime}}</span>
                     <br />
                 </div>
-
             </ng-template>
         </div>
-        <div class="sendMessage">
-            <input type="text" id="typedText" value={{text}} #message>
-            <br />
-            <button type="submit" (click)="addMessage(message, room?.roomId)">Send</button>
-        </div>
+    </div>
+    <div class="send-meessage">
+        <input type="text" id="typedText" value={{text}} #message>
+        <button class="text-to-send p-2 ml-1" type="submit" (click)="addMessage(message, room?.roomId)">Send</button>
     </div>
 </div>
-

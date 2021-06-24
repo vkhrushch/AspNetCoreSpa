@@ -671,8 +671,8 @@ namespace AspNetCoreSpa.Infrastructure.Persistence.Migrations
                     b.Property<int>("ChatRoomId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ParticipantId");
 

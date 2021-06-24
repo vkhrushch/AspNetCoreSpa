@@ -29,6 +29,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.2" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.2" />
+		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="5.0.6" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -41,6 +42,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="System.Data.SQLite" Version="1.0.114.3" />
 	</ItemGroup>
 
 

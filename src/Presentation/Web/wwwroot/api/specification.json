@@ -612,6 +612,21 @@
             "x-position": 1
           }
         ],
+        "requestBody": {
+          "x-name": "participantNames",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
         "responses": {
           "204": {
             "description": ""
@@ -622,6 +637,34 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/ChatRooms/GetAllChatRoomUsers": {
+      "get": {
+        "tags": [
+          "ChatRooms"
+        ],
+        "operationId": "ChatRooms_GetAllChatRoomUsers",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -1783,18 +1826,25 @@
               "nullable": true
             },
             "x-position": 2
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 3
           }
         ],
         "responses": {
-          "204": {
-            "description": ""
-          },
-          "default": {
+          "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
@@ -3409,6 +3459,10 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "messageId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "chatRoomId": {
             "type": "integer",
             "format": "int32"

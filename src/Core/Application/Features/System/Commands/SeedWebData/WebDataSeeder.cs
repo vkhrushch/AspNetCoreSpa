@@ -25,6 +25,7 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
         private readonly List<GameDifficultyLevel> _gameDifficultyLevels = new List<GameDifficultyLevel>();
         private readonly List<ChatRoom> _chatRooms = new List<ChatRoom>();
         private readonly List<Message> _messages = new List<Message>();
+        private readonly List<Participant> _participants = new List<Participant>();
         private readonly List<Game> _games = new List<Game>();
         private readonly List<GameDeveloperLevel> _gameDeveloperLevels = new List<GameDeveloperLevel>();
         private readonly List<GameDeveloper> _gameDevelopers = new List<GameDeveloper>();
@@ -71,6 +72,8 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
 
             await SeedMessageAsync(cancellationToken);
 
+            await SeedParticipantAsync(cancellationToken);
+
             // Games section
 
             await SeedGameGenresAsync(cancellationToken);
@@ -116,6 +119,21 @@ namespace AspNetCoreSpa.Application.Features.System.Commands.SeedWebData
             });
 
             _context.Messages.AddRange(_messages);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        private async Task SeedParticipantAsync(CancellationToken cancellationToken)
+        {
+            _participants.AddRange(new[]
+            {
+                new Participant() {ChatRoomId = 1, UserId = Guid.Parse("5b285c41-06e0-47f8-8422-a5e7a2205965")},
+                new Participant() {ChatRoomId = 2, UserId = Guid.Parse("5b285c41-06e0-47f8-8422-a5e7a2205965")},
+                new Participant() {ChatRoomId = 3, UserId = Guid.Parse("5b285c41-06e0-47f8-8422-a5e7a2205965")},
+                new Participant() {ChatRoomId = 2, UserId = Guid.Parse("3d7d9f6b-a721-4d7b-9d44-64cfcb3e2dd9")}
+            });
+
+            _context.Participants.AddRange(_participants);
 
             await _context.SaveChangesAsync(cancellationToken);
         }

@@ -1,8 +1,12 @@
-﻿<div>
-    <appc-messages class="messages" [room]="selectedRoom"> </appc-messages>
-    <div class="rooms">
-        <h2 class="chatHeader">Chat Rooms</h2>
-        <ul class="chatRooms">
+﻿<button type="button" class="create-button1 align-self-md-start" id="switch" (click)="switchPages()">Switch</button>
+<div class="main-body d-flex justify-content-around">
+    <div class="rooms" id="chat-rooms">
+        <div class="chat-header">
+            <button type="button" class="create-button float-right" (click)="createChatRoom()">Create new chat</button>
+            <h2 class="chat-title text-left">Chat Rooms</h2>
+        </div>
+
+        <ul class="chat-rooms p-0 mb-0">
             <li *ngFor="let room of chatRooms"
                 [class.selected]="room === selectedRoom"
                 (click)="onSelect(room)">
@@ -10,5 +14,5 @@
             </li>
         </ul>
     </div>
+    <appc-messages class="messages float-right mb-2" id="messages" [room]="selectedRoom"> </appc-messages>
 </div>
-

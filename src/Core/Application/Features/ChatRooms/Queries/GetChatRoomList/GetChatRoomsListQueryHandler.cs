@@ -1,5 +1,4 @@
 ﻿using AspNetCoreSpa.Application.Abstractions;
-using AspNetCoreSpa.Application.Extensions;
 using AspNetCoreSpa.Application.Features.Participants.Queries.GetParticipantList;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -33,7 +32,7 @@ namespace AspNetCoreSpa.Application.Features.ChatRooms.Queries.GetChatRoomList
            
             var vm = new ChatRoomsListVm
             {
-                ChatRooms = chatRooms.Where(t => participants.Where(k => k.UserId.ToGuid() == request.UserId).ToList().Select(i => i.ChatRoomId).Contains(t.RoomId)).ToList()
+                ChatRooms = chatRooms.Where(t => participants.Where(k => k.UserId == request.UserId).ToList().Select(i => i.ChatRoomId).Contains(t.RoomId)).ToList()
             };
 
             return vm;
